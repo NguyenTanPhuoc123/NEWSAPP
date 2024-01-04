@@ -1,4 +1,4 @@
-import 'package:doandidong/views/mainapp.dart';
+import 'package:doandidong/views/loginscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,11 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
