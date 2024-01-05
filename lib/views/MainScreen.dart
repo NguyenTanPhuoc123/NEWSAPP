@@ -1,23 +1,23 @@
-import 'package:doandidong/views/homescreenbody.dart';
-import 'package:doandidong/views/notificationscreen.dart';
-import 'package:doandidong/views/personScreen.dart';
-import 'package:doandidong/views/videoScreen.dart';
+import 'package:doandidong/views/HomeScreen.dart';
+import 'package:doandidong/views/NotificationScreen.dart';
+import 'package:doandidong/views/PersonalScreen.dart';
+import 'package:doandidong/views/VideoScreen.dart';
 import 'package:flutter/material.dart';
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex=0;
   late List<Widget> _widgetOptions;
   @override 
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-     HomeScreenBody(),
+     HomeScreen(),
      VideoScreen(),
      NotificationScreen(),
      PersonScreen()
@@ -32,21 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: Text('VNEWS', style: TextStyle(
-        fontSize: 30,
-        color: Colors.green
-      ),
-      ),
-      actions: [
-        IconButton(onPressed: (){},
-         icon: Icon(Icons.search)
-         )
-      ],
-      
-    ),
-      body: _widgetOptions.elementAt(_selectedIndex),
-    
+    body: _widgetOptions.elementAt(_selectedIndex),
     bottomNavigationBar: 
       BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -56,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.video_library_outlined),
-            label: 'Danh mục',
+            label: 'Video',
           ),
 
           BottomNavigationBarItem(
@@ -65,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Người dùng',
+            label: 'Cá nhân',
           )
         ],
         unselectedItemColor: Colors.black.withOpacity(0.6),
