@@ -1,7 +1,7 @@
 import 'package:doandidong/views/HomeScreen.dart';
-import 'package:doandidong/views/NotificationScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
-import 'package:doandidong/views/VideoScreen.dart';
+import 'package:doandidong/views/notificationscreen.dart';
+import 'package:doandidong/views/videoScreen.dart';
 import 'package:flutter/material.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
