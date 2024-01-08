@@ -1,9 +1,4 @@
-import 'package:doandidong/views/forgotpasswordscreen.dart';
-import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
-import 'package:doandidong/views/mainapp.dart';
-import 'package:doandidong/views/inforegisterScreen.dart';
-import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
