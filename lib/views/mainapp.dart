@@ -32,19 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: Text('VNEWS', style: TextStyle(
-        fontSize: 30,
-        color: Colors.green
-      ),
-      ),
-      actions: [
-        IconButton(onPressed: (){},
-         icon: Icon(Icons.search)
-         )
-      ],
-      
-    ),
       body: _widgetOptions.elementAt(_selectedIndex),
     
     bottomNavigationBar: 
