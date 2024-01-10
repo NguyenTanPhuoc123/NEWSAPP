@@ -1,5 +1,6 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/news.dart';
+import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/webfeed.dart';
 
@@ -15,7 +16,7 @@ class _NewsItemState extends State<NewsItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsDetailScreen(news: widget.news))),
       child: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
