@@ -1,4 +1,11 @@
+
 import 'package:doandidong/views/personal.dart';
+import 'package:doandidong/views/HomeScreen.dart';
+import 'package:doandidong/views/MainScreen.dart';
+import 'package:doandidong/views/NewsDetailScreen.dart';
+import 'package:doandidong/views/VideoScreen.dart';
+import 'package:doandidong/views/loginscreen.dart';
+import 'package:doandidong/views/personal_information.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,12 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'VNEWS',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const main_personal(),
+      home: const Screen_pesonal (),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:doandidong/views/homescreen.dart';
+import 'package:doandidong/views/personal_information.dart';
 import 'package:flutter/material.dart';
 
 class main_personal extends StatefulWidget {
