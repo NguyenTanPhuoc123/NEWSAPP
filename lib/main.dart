@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'views/notificationScreen.dart';
+import 'views/followScreen.dart';
+import 'views/officialScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +13,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      // title: 'Flutter Demo',
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //   useMaterial3: true,
+      // ),
       home: null,
+      initialRoute: '/noti',
+      routes: {
+        '/noti': (context) => Noti(),
+        '/follow': (context) => Follow(),
+        '/official': (context) => Official(),
+      },
     );
   }
 }
