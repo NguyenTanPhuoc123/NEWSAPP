@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControllerNews.dart';
+import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/NewsItem.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/webfeed.dart';
@@ -12,9 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ControllerNews controllerNews = ControllerNews();
+  List<News> listNews = List.filled(0,News("","","","","",""),growable: true);
   RssFeed feed = RssFeed();
-
   var categorys = [
     "Đọc nhiều",
     "Cho bạn",
@@ -22,20 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
     "Thể thao",
   ];
   int currentPage = 0;
-
-  updateFeed(feed){
-    setState(() {
-      this.feed = feed;
-    });
-  }
-
   load() async{
-    controllerNews.loadFeed().then((result){
+     ControllerNews.loadFeed().then((result){
       if(null == result || result.toString().isEmpty){
         return;
       }
-      updateFeed(result);
-      
+      setState(() {
+        feed = result;
+      });
     });
     
   }
@@ -44,6 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     load();
+    ControllerNews.getListNews().then((value){
+      listNews = ControllerNews.listNews;
+    });
+    
   }
 
   @override
@@ -104,16 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            controllerNews.isFeedEmpty(feed)? const Column(children:[ SizedBox(height: 180) ,CircularProgressIndicator(),]):
+              listNews.isEmpty? const Column(children:[ SizedBox(height: 180) ,CircularProgressIndicator(),]):
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 primary: false,
                 shrinkWrap: true,
-                physics:AlwaysScrollableScrollPhysics(),
-                itemCount: feed.items!.length,
+                physics: const BouncingScrollPhysics(),
+                itemCount: listNews.length,
                 itemBuilder: (context,index){
-                  final item = feed.items![index];
-                  return NewsItem(feed: feed,item: item,controllerNews: controllerNews,);
+                  return NewsItem(news: listNews[index]);
                   }
                 )
           ],
