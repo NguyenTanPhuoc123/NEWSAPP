@@ -1,6 +1,7 @@
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
 import 'package:doandidong/views/notificationscreen.dart';
+import 'package:doandidong/views/notificationscreen.dart';
 import 'package:doandidong/views/videoScreen.dart';
 import 'package:flutter/material.dart';
 class MainScreen extends StatefulWidget {
@@ -16,11 +17,11 @@ class _MainScreenState extends State<MainScreen> {
   @override 
   void initState() {
     super.initState();
-    _widgetOptions = <Widget>[
-     HomeScreen(),
-     VideoScreen(),
-     NotificationScreen(),
-     PersonScreen()
+    _widgetOptions =  [
+     const HomeScreen(),
+     const VideoScreen(),
+     const NotificationScreen(),
+     const PersonScreen()
     ];
   }
     void _onitemtap(int index) {
@@ -42,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.video_library_outlined),
-            label: 'Video',
+            label: 'Danh mục',
           ),
 
           BottomNavigationBarItem(
@@ -51,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Cá nhân',
+            label: 'Người dùng',
           )
         ],
         unselectedItemColor: Colors.black.withOpacity(0.6),

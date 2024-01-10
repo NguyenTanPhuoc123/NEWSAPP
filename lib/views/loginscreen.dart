@@ -1,3 +1,5 @@
+import 'package:doandidong/views/forgotpasswordscreen.dart';
+import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('VNEWS',style: TextStyle(
           color:Colors.green[400],
           fontSize: 32,
@@ -67,7 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 InkWell(
                   child: Text("Quên mật khẩu",style: TextStyle(color: Colors.green[300]),),
-                  onTap: (){},
+                  onTap: (){
+                    // chuyển hướng sang màn hình forgotpassword 
+                    Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgotPasswordScreen(),
+                    ),
+                  );
+                  },
                 ),
                 const SizedBox(width: 20)
               ],
@@ -90,7 +101,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text("Bạn chưa có tài khoản? "),
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    // chuyển sang màn hình đăng ký
+                    Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResgisterScreen(),
+                    ),
+                  );
+                  },
                   child: Text("Đăng ký",style: TextStyle(color: Colors.green[300],fontWeight: FontWeight.w300),),
                 )
               ],
