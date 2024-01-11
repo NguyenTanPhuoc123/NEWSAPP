@@ -164,35 +164,3 @@ class _main_personalState extends State<main_personal> {
       );
   }
 }
-//  Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children: [
-//                    Column(children: [
-//                       IconButton(onPressed: (){}, icon:  const Icon(Icons.folder),iconSize: 65,),
-//                     const Text("Thư mục",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-//                   ],),
-//                     Column(children: [
-//                       IconButton(onPressed: (){}, icon:  const Icon(Icons.heart_broken),iconSize: 65,),
-//                     const Text("Đã Thích",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-//                   ],),
-//               ],),
-//                Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceAround,children: [
-//                   Column(children: [
-//                        IconButton(onPressed: (){
-//                        Navigator.pushReplacement(context,   MaterialPageRoute(
-//                        builder: (context) => const screen_history(),
-//                        ),
-//                        );
-//                    }, icon:  const Icon(Icons.history),iconSize: 65,),
-//                     const Text("Theo Dõi",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-
-//                   ],),
-//                    Column(
-//                      children: [
-//                        IconButton(onPressed: (){}, icon:  const Icon(Icons.list_alt_outlined),iconSize: 65,),
-//                     const Text("Đang Theo Dõi",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-
-//                      ],
-//                    ),
-//               ],),
