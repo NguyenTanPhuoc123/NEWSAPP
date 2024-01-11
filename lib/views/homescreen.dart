@@ -1,6 +1,7 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/NewsItem.dart';
+import 'package:doandidong/views/SearchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/webfeed.dart';
 
@@ -39,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     load();
     ControllerNews.getListNews().then((value){
-      listNews = ControllerNews.listNews;
+      setState(() {
+        listNews= ControllerNews.listNews;
+      });
     });
     
   }
@@ -54,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.w600
         ),),
         actions: [
-          IconButton(onPressed: (){},
+          IconButton(onPressed: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchScreen())),
           icon: const Icon(Icons.search,color: Color.fromRGBO(85, 80, 80, 1),))
         ],
       ),  
