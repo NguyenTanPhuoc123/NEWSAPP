@@ -1,9 +1,12 @@
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
-import 'package:doandidong/views/NotificationScreen.dart';
-import 'package:doandidong/views/VideoScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:doandidong/views/videoScreen.dart';
+import 'package:doandidong/views/notificationscreen.dart';
+
+
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -12,19 +15,22 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex=0;
+  int _selectedIndex = 0;
   late List<Widget> _widgetOptions;
-  @override 
+  @override
   void initState() {
     super.initState();
-    _widgetOptions =  [
-     const HomeScreen(),
-     const VideoScreen(),
-     const NotificationScreen(),
-     const PersonalScreen()
+
+    _widgetOptions = [
+      const HomeScreen(),
+      const VideoScreen(),
+      const NotificationScreen(),
+      const PersonalScreen()
+
     ];
   }
-    void _onitemtap(int index) {
+
+  void _onitemtap(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -62,5 +68,6 @@ class _MainScreenState extends State<MainScreen> {
         onTap: _onitemtap,
     )
     );
+
   }
 }

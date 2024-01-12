@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 class NewsItem extends StatefulWidget {
-  const NewsItem({super.key,required this.news});
+  const NewsItem({super.key, required this.news});
   final News news;
   @override
   State<NewsItem> createState() => _NewsItemState();
@@ -63,42 +63,49 @@ class _NewsItemState extends State<NewsItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsDetailScreen(news: widget.news))),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NewsDetailScreen(news: widget.news))),
       child: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Color.fromRGBO(246, 238, 238, 1),
-          borderRadius: BorderRadius.circular(18)
-        ),
+            color: Color.fromRGBO(246, 238, 238, 1),
+            borderRadius: BorderRadius.circular(18)),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, 
-          crossAxisAlignment: CrossAxisAlignment.start,         
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 130,
               width: double.infinity,
               decoration: BoxDecoration(
-                image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.fill),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(18))
-              ),
+                  image: DecorationImage(
+                      image: NetworkImage(widget.news.urlImage),
+                      fit: BoxFit.fill),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(18))),
             ),
             Container(
               margin: const EdgeInsets.all(3),
-              child: Text(widget.news.title,style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600
-              ),),
+              child: Text(
+                widget.news.title,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
             ),
             const SizedBox(height: 10),
             Row(
               children: [
                 const SizedBox(width: 3),
                 Container(
-                  width: 30,height: 30,
+                  width: 30,
+                  height: 30,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(image: NetworkImage(widget.news.urlLogo),fit: BoxFit.fill)
-                  ),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: NetworkImage(widget.news.urlLogo),
+                          fit: BoxFit.fill)),
                 ),
                 const SizedBox(width: 3),
                 Text(widget.news.author,style: const TextStyle(
@@ -134,14 +141,19 @@ class _NewsItemState extends State<NewsItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(widget.news.pushDate,style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300
-                ),),
-                const SizedBox(width: 5,)
+                Text(
+                  widget.news.pushDate,
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w300),
+                ),
+                const SizedBox(
+                  width: 5,
+                )
               ],
             ),
-            const SizedBox(height: 3,)
+            const SizedBox(
+              height: 3,
+            )
           ],
         ),
       ),

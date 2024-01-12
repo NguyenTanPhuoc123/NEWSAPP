@@ -1,4 +1,3 @@
-
 import 'package:doandidong/views/FavoriteScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PersonalInformationScreen(),
+      home: const MainScreen(),
     );
   }
 }
