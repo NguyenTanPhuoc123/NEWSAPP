@@ -1,8 +1,11 @@
+import 'package:doandidong/views/history.dart';
+import 'package:doandidong/views/personal.dart';
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/MainScreen.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:doandidong/views/VideoScreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
+import 'package:doandidong/views/personal_information.dart';
 import 'package:flutter/material.dart';
 import 'views/notificationscreen.dart';
 import 'views/followScreen.dart';
