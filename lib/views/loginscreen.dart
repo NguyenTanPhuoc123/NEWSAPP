@@ -1,4 +1,4 @@
-import 'package:doandidong/views/forgotpasswordscreen.dart';
+import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
 

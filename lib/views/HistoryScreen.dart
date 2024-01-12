@@ -1,5 +1,5 @@
 import 'package:doandidong/model/news.dart';
-import 'package:doandidong/views/personal.dart';
+import 'package:doandidong/views/PersonalScreen.dart';
 import 'package:flutter/material.dart';
 
 class screen_history extends StatelessWidget {
@@ -14,7 +14,7 @@ class screen_history extends StatelessWidget {
       leading: IconButton(icon: const Icon(Icons.arrow_back_rounded),
       onPressed: (){
         Navigator.pushReplacement(context,   MaterialPageRoute(
-              builder: (context) => const main_personal(),
+              builder: (context) => const PersonalScreen(),
             ),
             );
       },

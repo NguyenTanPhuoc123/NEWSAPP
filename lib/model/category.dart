@@ -2,5 +2,6 @@
 class Category {
   int id;
   String name;
-  Category(this.id,this.name);
+  String url;
+  Category(this.id,this.name,this.url);
 }

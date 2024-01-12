@@ -1,8 +1,8 @@
-import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:webfeed/webfeed.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewsItem extends StatefulWidget {
   const NewsItem({super.key,required this.news});
@@ -12,7 +12,54 @@ class NewsItem extends StatefulWidget {
 }
 
 class _NewsItemState extends State<NewsItem> {
-  
+  int countLike = 0;
+  int countComment = 12000;
+  bool isFavorite=false;
+
+  String formatCount(int number){
+    if(number<10000)
+    {
+      return "$number";
+    }
+    else if(number>=10000 && number<1000000)
+    {
+      return "${number~/1000}K+";
+    }
+    else if(number<1000000000)
+    {
+      return "${number~/1000000}M+";
+    }
+    else {
+      return "1T+";
+    }
+    
+  }
+
+
+   favorite(){
+    if(isFavorite){
+      return IconButton(
+              onPressed: (){
+                setState(() {
+                  countLike--;
+                  isFavorite = !isFavorite;
+                  
+                }); 
+              },
+              icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
+        );
+    }
+    return IconButton(
+      onPressed: (){
+        setState(() {
+          isFavorite = !isFavorite;
+          countLike++;
+        }); 
+      },
+      icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -58,8 +105,30 @@ class _NewsItemState extends State<NewsItem> {
                 fontSize: 14,
                 fontWeight: FontWeight.w600
                 ),
-              )
-                
+              ),
+              Expanded(
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  favorite(),
+                  Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed:()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsDetailScreen(news: widget.news))) ,
+                        icon: const FaIcon(FontAwesomeIcons.comment,size: 16),
+                      ),
+                    ],
+                  ),
+                  Text(formatCount(countComment),style:const TextStyle(fontSize: 16)),
+                  IconButton(
+                    onPressed: () async{
+                      await Share.share("${widget.news.title}\n\n${widget.news.link}");
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
+                  )
+                ],
+              ))  
               ],
             ),
             Row(

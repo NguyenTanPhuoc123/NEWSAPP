@@ -1,6 +1,9 @@
-import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/comment.dart';
+import 'package:doandidong/model/user.dart';
+import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   const NewsDetailScreen({super.key, required this.news});
@@ -10,22 +13,59 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
-  List<String> contents = List.filled(0,"",growable: true);
-
-  @override
-  void initState() {
-    super.initState();
-    ControllerNews.contents.clear();
-    ControllerNews.getContent(widget.news.content).then((_){
-      setState(() {
-        contents = ControllerNews.contents;
-      });
-      
-    });
-  }
-
+  var content = TextEditingController();
+  int countLike = 1234;
+  bool isFavorite=false;
+  List<Comment> comments = [
+    Comment(User("","","Phước Nguyễn","",0),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Danh Hồ","",0),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Trường Phạm","",0),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Trân Nguyễn","",1),"1/1/2024","Hay lắm!!!"),
+  ];
   
-
+  addComment(Comment comment){
+    comments.insert(0,comment);
+  }
+  String formatCount(int number){
+   if(number<10000)
+    {
+      return "$number";
+    }
+    else if(number>=10000 && number<1000000)
+    {
+      return "${number~/1000}K+";
+    }
+    else if(number<1000000000)
+    {
+      return "${number~/1000000}M+";
+    }
+    else {
+      return "1T+";
+    }
+  }
+  favorite(){
+    if(isFavorite){
+      return IconButton(
+              onPressed: (){
+                setState(() {
+                  countLike--;
+                  isFavorite = !isFavorite;
+                  
+                }); 
+              },
+              icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
+        );
+    }
+    return IconButton(
+      onPressed: (){
+        setState(() {
+          isFavorite = !isFavorite;
+          countLike++;
+        }); 
+      },
+      icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
+      );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,13 +98,18 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               const SizedBox(width: 5,),
               Text(widget.news.pushDate,style: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w400
               ),),
               
             ],
           ),
           const SizedBox(height: 5),
+          Text(widget.news.description,style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500
+                ),
+          ),
           Container(
             width: 300,
             height: 300,
@@ -78,33 +123,44 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             primary: false,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: contents.length,
+            itemCount: widget.news.contents.length,
             itemBuilder: (context,index){
               return Container(
                 margin: const EdgeInsets.all(5),
-                child: Text(contents[index],style: const TextStyle(
+                child: Text(widget.news.contents[index],style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500
                 ),),
               );
             }
           ),
-          const Row(
+           Row(
+            children: [
+              IconButton(
+                onPressed: (){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Đã thêm vào bộ sưu tập"),
+                        duration: Duration(seconds: 1),
+                      )
+                    );
+                      
+                },
+                icon: Icon(Icons.bookmark)
+              ),
+              favorite(),
+                  Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
+                    
+            ],
+          ),
+           Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(width: 5),
-                     Text("Bình Luận",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600))
+                     Text("Bình Luận(${comments.length})",style: const TextStyle(fontSize: 22,fontWeight: FontWeight.w600))
                   ],
           ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.bookmark)
-              ),
-
-            ],
-          ),
+          const SizedBox(height: 5),
           Container(
             color: Colors.grey[100],
             child: Column(
@@ -114,7 +170,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     const SizedBox(width: 5,),
                     Expanded(
                       child: TextField(
-                        controller: TextEditingController(),
+                        controller: content,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder()
                           ),                   
@@ -122,30 +178,29 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     ),
                     const SizedBox(width: 10,),
                     IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        addComment(
+                          Comment(
+                            User("","","Người mới","",0),
+                            "1/1/2024",
+                            content.text
+                            )
+                          );
+                      });
+                    },
                     icon: const Icon(Icons.send,color: Colors.grey),
                     )
                   ],
                 ),
-                ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Huy Sơn",style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
-                      Text("8 giờ trước",style:TextStyle(fontSize: 12,fontWeight: FontWeight.w300))
-                    ],
-                  ),
-                  subtitle: Text("Ngoan cố lắm",style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w400),),
-                  leading: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.fill),
-                      shape: BoxShape.circle
-                    ),
-                      
-                  ),
-                ),
+                ListView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  itemCount: comments.length,
+                  itemBuilder: (context,index){
+                    return CommentItem(comment: comments[index]);
+                  }
+                )
                 
               ],
             ),

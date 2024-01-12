@@ -1,9 +1,9 @@
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
-import 'package:doandidong/views/notificationscreen.dart';
-import 'package:doandidong/views/notificationscreen.dart';
-import 'package:doandidong/views/videoScreen.dart';
+import 'package:doandidong/views/NotificationScreen.dart';
+import 'package:doandidong/views/VideoScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
      const HomeScreen(),
      const VideoScreen(),
      const NotificationScreen(),
-     const PersonScreen()
+     const PersonalScreen()
     ];
   }
     void _onitemtap(int index) {
@@ -42,8 +42,8 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.video_library_outlined),
-            label: 'Danh mục',
+            icon: FaIcon(FontAwesomeIcons.youtube),
+            label: 'Video',
           ),
 
           BottomNavigationBarItem(

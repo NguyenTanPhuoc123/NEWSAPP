@@ -2,10 +2,7 @@ import 'package:doandidong/control/ControllerVideo.dart';
 import 'package:doandidong/model/video.dart';
 import 'package:doandidong/views/VideoItem.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:webfeed/webfeed.dart';
-import 'package:xml/xml.dart'as xml;
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
 
 
 
@@ -31,7 +28,11 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black38,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
        body: _videos.isEmpty ? const Center(child: CircularProgressIndicator(),):
        PageView.builder(
         scrollDirection: Axis.vertical,
