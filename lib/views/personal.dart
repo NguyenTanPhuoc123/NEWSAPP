@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:doandidong/views/VideoItem.dart';
 import 'package:doandidong/views/heart.dart';
 import 'package:doandidong/views/history.dart';
 import 'package:doandidong/views/homescreen.dart';
@@ -151,16 +152,6 @@ class _main_personalState extends State<main_personal> {
         ]),
         
         ),
-        bottomNavigationBar:  BottomNavigationBar(
-          selectedItemColor: Colors.red[200],
-          unselectedItemColor: Colors.grey,
-          unselectedLabelStyle: const TextStyle(fontSize: 5,fontWeight: FontWeight.bold),
-          items: [
-              BottomNavigationBarItem(icon: IconButton(onPressed: (){}, icon: const Icon(Icons.home)),label:"Home"),
-               BottomNavigationBarItem(icon: IconButton(onPressed: (){}, icon: const Icon(Icons.video_collection_rounded)),label:"Video"),
-              BottomNavigationBarItem(icon: IconButton(onPressed: (){}, icon: const Icon(Icons.notifications)),label:"Thông báo"),
-               BottomNavigationBarItem(icon: IconButton(onPressed: (){}, icon: const Icon(Icons.account_box_rounded)),label:"Cá Nhân"),
-              ], ),
       );
   }
 }
