@@ -4,7 +4,7 @@ import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:doandidong/views/VideoScreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
 import 'package:flutter/material.dart';
-import 'views/notificationScreen.dart';
+import 'views/notificationscreen.dart';
 import 'views/followScreen.dart';
 import 'views/officialScreen.dart';
 import 'views/HomeScreen.dart';
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/noti',
       routes: {
-        '/noti': (context) => NotificationScreen(),
+        '/noti': (context) => Noti(),
         '/follow': (context) => Follow(),
         '/official': (context) => Official(),
         '/home': (context) => HomeScreen(),
