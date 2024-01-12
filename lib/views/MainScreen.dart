@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     _widgetOptions = [
       const HomeScreen(),
       const VideoScreen(),
-      const NotificationScreen(),
+      const Noti(),
       const PersonalScreen()
 
     ];

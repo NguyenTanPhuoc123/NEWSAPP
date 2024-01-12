@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
-class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({super.key});
+class Noti extends StatefulWidget {
+  const Noti({super.key});
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  State<Noti> createState() => _NotiState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotiState extends State<Noti> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green[300],
+          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
+          title: Text('Thông báo'),
+        ),
         body: Container(
             child: Column(children: [
           Expanded(
@@ -18,59 +23,43 @@ class _NotificationScreenState extends State<NotificationScreen> {
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                    child: Column(
+                    child: Row(
                   children: [
-                    Row(
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image:
-                                          NetworkImage(notiList[index].imgUrl),
-                                      fit: BoxFit.fill)),
-                            )
-                          ],
-                        ),
-                        const SizedBox(width: 5),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  notiList[index].name,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(notiList[index].description),
-                              ],
-                            ),
-                          ],
-                        ),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            child: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage(notiList[index].imgUrl)))
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    Column(
                       children: [
+                        Row(
+                          children: [
+                            Text(
+                              notiList[index].name,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(notiList[index].description),
+                          ],
+                        ),
                         Container(
                           margin: EdgeInsets.only(left: 200),
                           child: Text(notiList[index].time,
                               textAlign: TextAlign.end,
                               style: const TextStyle(color: Colors.grey)),
-                        ),
+                        )
                       ],
-                    )
+                    ),
                   ],
                 ));
               },
             ),
           )
-        ])),
-        );
+        ])));
   }
 }
 
@@ -84,14 +73,9 @@ class Notification {
 }
 
 List notiList = [
-  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
-  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
-  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
-  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
-  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
+  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước', ''),
+  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước', ''),
+  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước', ''),
+  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước', ''),
+  Notification('Báo đời ', 'đã đăng một bài báo mới', '1 giờ trước', ''),
 ];
