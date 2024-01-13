@@ -1,4 +1,7 @@
+import 'package:doandidong/views/CollectionScreen.dart';
 import 'package:doandidong/views/FavoriteScreen.dart';
+import 'package:doandidong/views/ForgotPasswordScreen.dart';
+import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -112,7 +115,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  item(Icons.folder,"Bộ sưu tập",const FavoriteScreen()),
+                  item(Icons.folder,"Bộ sưu tập",const CollectionScreen()),
                   item(FontAwesomeIcons.solidHeart,"Đã thích",const FavoriteScreen()), 
                 ],
               ),
@@ -122,7 +125,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  item(Icons.history,"Lịch sử đọc",const FavoriteScreen()),
+                  item(Icons.history,"Lịch sử đọc",const HistoryScreen()),
                   item(Icons.list_alt,"Đang theo dõi",const FavoriteScreen()), 
                 ],
               ),
@@ -163,7 +166,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
             ),
             const SizedBox(height: 30),
           MaterialButton(
-          onPressed: (){},
+          onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen())),
           child:  Container(
             alignment: Alignment.center,
             height: 50,

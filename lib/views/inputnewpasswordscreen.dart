@@ -75,7 +75,7 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
             ),
             child: Container(
               padding: const EdgeInsets.all(10),
-              child: const Text("Cập Nhập",
+              child: const Text("Cập Nhật",
               style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
               ),
             )

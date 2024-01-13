@@ -3,27 +3,27 @@ import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/FavoriteNewsItem.dart';
 import 'package:flutter/material.dart';
 
-class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+class CollectionScreen extends StatefulWidget {
+  const CollectionScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<CollectionScreen> createState() => _CollectionScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  List<News> newsHistorys = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""));
+class _CollectionScreenState extends State<CollectionScreen> {
+  List<News> newsCollection = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""));
   @override
   void initState() {
     super.initState();
     setState(() {
-      newsHistorys = ControllerNews.listNews;
+      newsCollection = ControllerNews.listNews;
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Danh sách đã thích(${newsHistorys.length})',style:const TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
+        title:  Text('Bộ sưu tập(${newsCollection.length})',style:const TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
         centerTitle: true,
         leading: IconButton(
           onPressed: ()=>Navigator.pop(context),
@@ -33,12 +33,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
           IconButton(onPressed: (){},icon:const Icon(Icons.sort_rounded,color: Colors.black38,))
         ],
       ),
-      body: newsHistorys.isEmpty ? const Center(child: CircularProgressIndicator(),):
+      body: newsCollection.isEmpty ? const Center(child: CircularProgressIndicator(),):
       ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: newsHistorys.length,
+        itemCount: newsCollection.length,
         itemBuilder: (context,index){
-          return FavoriteNewsItem(news: newsHistorys[index]);
+          return FavoriteNewsItem(news: newsCollection[index]);
         }
       )
     );

@@ -1,4 +1,5 @@
 import 'package:doandidong/model/video.dart';
+import 'package:doandidong/views/officialScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -31,7 +32,7 @@ class _VideoItemState extends State<VideoItem> {
       alignment: Alignment.bottomCenter,
       children: [
         InkWell(
-          onTap: (){},
+          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen())),
           child: Container(
             height: 50,
             width: 50,
@@ -63,7 +64,7 @@ class _VideoItemState extends State<VideoItem> {
     return Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             child: YoutubePlayer(controller: youtubePlayerController),
           ),

@@ -1,6 +1,6 @@
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/model/comment.dart';
-import 'package:doandidong/model/user.dart';
+import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
