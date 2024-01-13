@@ -47,7 +47,7 @@ class _VideoItemState extends State<VideoItem> {
           bottom: -8,
           child: Container(
           decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(25)),
-          child:  InkWell(onTap: (){},child: Icon(Icons.add)),
+          child:  InkWell(onTap: (){},child: const Icon(Icons.add)),
         ))
       ],
     );
@@ -86,8 +86,7 @@ class _VideoItemState extends State<VideoItem> {
                         ),),
                       ),
                       Expanded(
-                        child: Container(
-                          
+                        child: Container(                 
                           margin: const EdgeInsets.all(5),
                           child: Text(widget.video.title,style: const TextStyle(
                             fontSize: 15,fontWeight: FontWeight.w600,

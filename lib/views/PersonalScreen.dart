@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PersonalScreen extends StatefulWidget {
   const PersonalScreen({super.key});
-
+  
   @override
   State<PersonalScreen> createState() => _PersonalScreenState();
 }
@@ -136,7 +136,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
           ),
          ),
         Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 40),
               color: Colors.grey[200],
               child: Column(
                 children: [
@@ -164,14 +164,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
                
               ),
             ),
-            const SizedBox(height: 30),
-          MaterialButton(
-          onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen())),
-          child:  Container(
-            alignment: Alignment.center,
-            height: 50,
+            const SizedBox(height: 50),
+          Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width,
             color: Colors.grey[200],
-            child: const Row(
+            child: MaterialButton(
+            onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen())),
+            child:  const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Đổi mật khẩu",style: TextStyle(
@@ -180,7 +180,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                 Icon(Icons.arrow_forward_ios,color: Colors.black38,)
               ],
             ),
-          ),
+            ),
           )
         ]
       ),

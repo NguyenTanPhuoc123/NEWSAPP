@@ -17,10 +17,10 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   int countLike = 1234;
   bool isFavorite=false;
   List<Comment> comments = [
-    Comment(User("","","Phước Nguyễn","",0),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Danh Hồ","",0),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Trường Phạm","",0),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Trân Nguyễn","",1),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Phước Nguyễn","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Danh Hồ","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Trường Phạm","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
   
   addComment(Comment comment){
@@ -182,7 +182,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       setState(() {
                         addComment(
                           Comment(
-                            User("","","Người mới","",0),
+                            User("","","Người mới","",true),
                             "1/1/2024",
                             content.text
                             )

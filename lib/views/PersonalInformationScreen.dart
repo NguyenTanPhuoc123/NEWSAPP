@@ -1,5 +1,6 @@
-import 'package:doandidong/views/PersonalScreen.dart';
+import 'package:doandidong/model/User.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
@@ -9,6 +10,73 @@ class PersonalInformationScreen extends StatefulWidget {
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
+  User user = User("abc123@gmail.com","12345678","Username","1/1/2024",true);
+  late String birthday;
+  late String username;
+  bool valueMale = false;
+  bool valueFemale = false;
+
+  editDisplayname(){
+    showDialog(context: context,builder:(BuildContext context){
+      var txt = TextEditingController();
+      return AlertDialog(
+        title: const Text('Cập nhật'),
+        content: TextField(
+          controller: txt,
+        ),
+        shape: const BeveledRectangleBorder(),
+        actions: [
+          TextButton(onPressed: ()=>Navigator.pop(context),
+           child: const Text("Không")
+          ),
+          TextButton(onPressed:(){
+            setState(() {
+              if(txt.text.isNotEmpty){
+                username = txt.text;
+              }
+              Navigator.pop(context);
+            });
+          },
+           child: const Text("Có")
+          ),
+        ],
+      );
+    });
+    
+  }
+
+  editBirthday(){
+    DateTime birth = DateFormat("dd/MM/yyyy").parse(user.birthday);
+    showDatePicker(
+      context: context,
+      initialDate: birth,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2050),
+    ).then((DateTime? value){
+      setState(() {
+        birthday =  DateFormat("dd/MM/yy").format(value??birth);
+      });
+    });
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      birthday = user.birthday;
+      username = user.displayName;
+      if(user.gender){
+        valueMale = true;
+        valueFemale = false;
+      }
+      else{
+        valueFemale = true;
+        valueMale = false;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,11 +137,11 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-               Text("Username",style: TextStyle(
+               Text(username,style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 18
               ),),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.edit))
+              IconButton(onPressed: editDisplayname, icon: const Icon(Icons.edit))
             ],
           ),
           const SizedBox(height: 15),
@@ -84,39 +152,37 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Container(
-                child: Row(
-                  children: [
-                    Radio(
-                      value: true,
-                      groupValue: true,
-                      onChanged: (value){
-                        setState(() {
-                          
-                        });
-                      }
-                    ),
-                    const SizedBox(width: 5,),
-                    const Text("Nam",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),)
-                  ],
-                ),
+              Row(
+                children: [
+                  Radio(
+                    value: valueMale,
+                    groupValue: true,
+                    onChanged: (value){
+                      setState(() {
+                        valueMale = true;
+                        valueFemale = false;
+                      });
+                    }
+                  ),
+                  const SizedBox(width: 5),
+                  const Text("Nam",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),)
+                ],
               ),
-              Container(
-                child: Row(
-                  children: [
-                    Radio(
-                      value: false,
-                      groupValue: true,
-                      onChanged: (value){
-                        setState(() {
-                          
-                        });
-                      }
-                    ),
-                    const SizedBox(width: 5),
-                    const Text("Nữ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),)
-                  ],
-                ),
+              Row(
+                children: [
+                  Radio(
+                    value: valueFemale,
+                    groupValue: true,
+                    onChanged: (value){
+                      setState(() {
+                        valueFemale = true;
+                        valueMale = false;
+                      });
+                    }
+                  ),
+                  const SizedBox(width: 5),
+                  const Text("Nữ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),)
+                ],
               )
               
               
@@ -130,8 +196,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text("1/1/2024",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.calendar_month))
+              Text(birthday,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+              IconButton(onPressed:editBirthday, icon: const Icon(Icons.calendar_month))
             ],
           ),
           const SizedBox(height: 15),            
@@ -142,7 +208,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text("abc123@gmail.com",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+              Text(user.email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
               
             ],
           ),
