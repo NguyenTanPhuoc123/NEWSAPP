@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:doandidong/views/HomeScreen.dart';
-import 'package:doandidong/views/PersonalScreen.dart';
-import 'package:doandidong/views/videoScreen.dart';
-import 'MainScreen.dart';
 
 class Noti extends StatefulWidget {
   const Noti({super.key});
