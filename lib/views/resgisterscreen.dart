@@ -1,4 +1,4 @@
-import 'package:doandidong/views/inforegisterScreen.dart';
+import 'package:doandidong/views/InfoRegisterScreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
 import 'package:flutter/material.dart';
 

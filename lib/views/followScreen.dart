@@ -1,57 +1,62 @@
 import 'package:flutter/material.dart';
 
-class Follow extends StatefulWidget {
-  const Follow({super.key});
+class FollowScreen extends StatefulWidget {
+  const FollowScreen({super.key});
 
   @override
-  State<Follow> createState() => _FollowState();
+  State<FollowScreen> createState() => _FollowScreenState();
 }
 
-class _FollowState extends State<Follow> {
+class _FollowScreenState extends State<FollowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.green[300],
-          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
-          title: Text('Đang theo dõi'),
-          centerTitle: true),
-      body: Container(
-          child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                      child: Row(children: [
-                    Column(children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage(followList[index].imgUrl),
-                                fit: BoxFit.fill)),
-                      )
-                    ]),
-                    const SizedBox(width: 5),
-                    Text(
-                      followList[index].name,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Expanded(
-                        child: Container(
-                      child: IconButton(
-                          icon: Icon(Icons.done_all), onPressed: () {}),
-                    ))
-                  ]));
-                }),
-          )
-        ],
-      )),
+        title: const Text('Đang theo dõi',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: ()=>Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back,color: Colors.black38,)
+        ),
+        
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+                children: [
+        Expanded(
+          child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                    child: Row(children: [
+                  Column(children: [
+                    Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: NetworkImage(followList[index].imgUrl),
+                              fit: BoxFit.fill)),
+                    )
+                  ]),
+                  const SizedBox(width: 5),
+                  Text(
+                    followList[index].name,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(
+                      child: Container(
+                    child: IconButton(
+                        icon: Icon(Icons.done_all), onPressed: () {}),
+                  ))
+                ]));
+              }),
+        )
+                ],
+              ),
+      ),
     );
   }
 }

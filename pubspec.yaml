@@ -43,6 +43,11 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   xml: ^5.0.2
   html: ^0.15.0
+  flutter_html: ^3.0.0-beta.2
+  font_awesome_flutter: ^10.6.0
+  webview_flutter: ^3.0.0
+  intl: ^0.17.0
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +72,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  #assets:
+  #  - accest/img/animal.jpg
+  #   - images/a_dot_ham.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

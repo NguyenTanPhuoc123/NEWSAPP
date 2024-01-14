@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:doandidong/views/VideoItem.dart';
-import 'package:doandidong/views/heart.dart';
-import 'package:doandidong/views/history.dart';
-//import 'package:doandidong/views/homescreen.dart';
-import 'package:doandidong/views/personal_information.dart';
+import 'package:doandidong/views/FavoriteScreen.dart';
+import 'package:doandidong/views/HistoryScreen.dart';
+import 'package:doandidong/views/homescreen.dart';
+import 'package:doandidong/views/PersonalInformationScreen.dart';
 import 'package:flutter/material.dart';
 
 class main_personal extends StatefulWidget {
@@ -69,7 +69,8 @@ class _main_personalState extends State<main_personal> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Screen_pesonal(),
+                                  builder: (context) =>
+                                      const PersonalInformationScreen(),
                                 ),
                               );
                             },
@@ -112,7 +113,7 @@ class _main_personalState extends State<main_personal> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const scren_hearst(),
+                                          const FavoriteScreen(),
                                     ),
                                   );
                                 },
@@ -138,7 +139,7 @@ class _main_personalState extends State<main_personal> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const screen_history(),
+                                          const HistoryScreen(),
                                     ),
                                   );
                                 },

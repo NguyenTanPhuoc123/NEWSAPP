@@ -1,4 +1,4 @@
-import 'package:doandidong/views/forgotpasswordscreen.dart';
+import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
 import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
             ),
             child: Container(
               padding: const EdgeInsets.all(10),
-              child: const Text("Cập Nhập",
+              child: const Text("Cập Nhật",
               style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
               ),
             )

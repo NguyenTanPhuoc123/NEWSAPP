@@ -15,7 +15,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "MU vật vã đi tim quá khứ ",
     "Onana cầu thủ mang danh hiệu thủ thành chơi chân hay nhất "
   ];
-  List<News> listNews = List.filled(0,News("","","","","","",),growable: true);
+  List<News> listNews = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""),growable: true);
   @override
   void initState() {
     super.initState();

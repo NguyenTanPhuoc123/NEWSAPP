@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 
 class ThongTin extends StatelessWidget {
-  const ThongTin({super.key});
+  const ThongTin({super.key,required this.description,required this.email,required this.address,required this.phone,required this.website});
+  final String email;
+  final String description;
+  final String address;
+  final String phone;
+  final String website;
+
+  style(){
+    return const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        Row(
-          children: [
-            Text('Truyền hình thông tấn'),
-            Text('GPHD BCĐT số 329/GP TTĐT cấp 03/11/2017'),
-            Text('Địa chỉ: Số 33 Lê Thánh Tông, Hoàn Kiếm, Hà Nội, VN'),
-            Text('Email: media@vnews.gov.vn'),
-            Text('Đường dây nóng: 088 816 11 61'),
-            Text('Website: '),
-          ],
-        )
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        Text(description,style: style(),),
+        Text('Địa chỉ: $address',style: style(),),
+        Text('Email: $email',style: style(),),
+        Text('Đường dây nóng: $phone',style: style(),),
+        Text('Website: $website',style: style(),)
       ]),
     );
   }
