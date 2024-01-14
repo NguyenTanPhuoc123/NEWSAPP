@@ -1,9 +1,12 @@
+import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/model/comment.dart';
 import 'package:doandidong/model/User.dart';
+import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   const NewsDetailScreen({super.key, required this.news});
@@ -146,10 +149,21 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     );
                       
                 },
-                icon: Icon(Icons.bookmark)
+                icon:  Icon(Icons.bookmark,color: Colors.grey[200])
               ),
               favorite(),
-                  Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
+              Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
+              const SizedBox(width: 10),
+              IconButton(
+                      onPressed: () async{
+                        if(ControllerUser.isLogin){
+                      await Share.share("${widget.news.title}\n\n${widget.news.link}");
+                        }else{
+                          showDialogLogin(context);
+                        }
+                      },
+                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
+                  )
                     
             ],
           ),

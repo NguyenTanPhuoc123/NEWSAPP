@@ -1,4 +1,6 @@
+import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/model/news.dart';
+import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -41,8 +43,13 @@ class _NewsItemState extends State<NewsItem> {
       return IconButton(
               onPressed: (){
                 setState(() {
+                  if(ControllerUser.isLogin){
                   countLike--;
                   isFavorite = !isFavorite;
+                  }
+                  else{
+                    showDialogLogin(context);
+                  }
                   
                 }); 
               },
@@ -52,8 +59,13 @@ class _NewsItemState extends State<NewsItem> {
     return IconButton(
       onPressed: (){
         setState(() {
-          isFavorite = !isFavorite;
-          countLike++;
+          if(ControllerUser.isLogin){
+            countLike++;
+            isFavorite = !isFavorite;
+          }
+          else{
+            showDialogLogin(context);
+          }
         }); 
       },
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 

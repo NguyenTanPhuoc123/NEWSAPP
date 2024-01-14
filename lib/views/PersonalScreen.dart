@@ -1,7 +1,10 @@
+import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
 import 'package:doandidong/views/FavoriteScreen.dart';
 import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
+import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,9 +18,16 @@ class PersonalScreen extends StatefulWidget {
 
 class _PersonalScreenState extends State<PersonalScreen> {
 
-  item(IconData icon, String label,Widget Page){
+  item(IconData icon, String label,Widget page){
     return InkWell(
-      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder:(context)=>Page)),
+      onTap: (){
+        if(ControllerUser.isLogin){
+        Navigator.push(context, MaterialPageRoute(builder:(context)=>page));
+        }
+        else{
+          showDialogLogin(context);
+        }
+      } ,
       child: Column(
         children: [
           Icon(icon),
@@ -72,7 +82,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
           fontWeight: FontWeight.w600
         ),),
         actions: [
-          IconButton(onPressed: (){},
+          IconButton(onPressed: (){
+            if(ControllerUser.isLogin){
+              showDialogLogout(context);
+            }
+            else{
+              showDialogLogin(context);
+            }
+          },
           icon: const Icon(Icons.exit_to_app,color: Colors.black38,)
         )
         ],
@@ -95,11 +112,18 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       Text("Username",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
                       InkWell(
                         onTap: (){
+                          if(ControllerUser.isLogin){
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context)=>const PersonalInformationScreen()));
+                          }
+                          else{
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=>const LoginScreen()));
+                          }
                         },
-                        child:  Text("Xem thông tin cá nhân",style: TextStyle(
+                        child:  Text(ControllerUser.isLogin? "Xem thông tin cá nhân":"Đăng nhập",style: TextStyle(
                           color: Colors.green[500],
                           fontSize: 14,
                           fontWeight: FontWeight.w500
@@ -116,7 +140,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   item(Icons.folder,"Bộ sưu tập",const CollectionScreen()),
-                  item(FontAwesomeIcons.solidHeart,"Đã thích",const FavoriteScreen()), 
+                  item(FontAwesomeIcons.solidHeart,"Bài đã thích",const FavoriteScreen()), 
                 ],
               ),
             ),
@@ -170,7 +194,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
             width: MediaQuery.of(context).size.width,
             color: Colors.grey[200],
             child: MaterialButton(
-            onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen())),
+            onPressed: (){
+              if(ControllerUser.isLogin){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen()));
+              }
+              else{
+                showDialogLogin(context);
+              }
+            },
             child:  const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

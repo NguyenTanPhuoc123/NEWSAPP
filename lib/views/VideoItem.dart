@@ -1,7 +1,10 @@
+import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/model/video.dart';
+import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/officialScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoItem extends StatefulWidget {
@@ -53,13 +56,6 @@ class _VideoItemState extends State<VideoItem> {
     );
   }
 
-  iconItem(FaIcon icon,String label){
-    return Column(children: [
-      IconButton(onPressed: (){},
-      icon: icon),
-      if(label.isNotEmpty) Text(label,style: const TextStyle(color: Colors.white),)
-    ],);
-  }
 
     return Stack(
         alignment: Alignment.bottomCenter,
@@ -73,7 +69,7 @@ class _VideoItemState extends State<VideoItem> {
             children: [
               Expanded(
                 flex: 3,
-                child: Container(
+                child: SizedBox(
                   height:MediaQuery.of(context).size.height/4.8,
                   child: Column(
                     children: [
@@ -106,12 +102,16 @@ class _VideoItemState extends State<VideoItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       profile(),
-                      iconItem( const FaIcon(FontAwesomeIcons.solidHeart,color: Colors.white),"1k"),
-                      InkWell(
-                        onTap: (){},
-                        child: iconItem( const FaIcon(FontAwesomeIcons.solidComment,color: Colors.white,),"1k"),
-                      ),
-                      iconItem( const FaIcon(FontAwesomeIcons.share,color: Colors.white,),""),
+                      IconButton(
+                      onPressed: () async{
+                        if(ControllerUser.isLogin){
+                      await Share.share("${widget.video.title}\n\n${widget.video.urlVideo}");
+                        }else{
+                          showDialogLogin(context);
+                        }
+                      },
+                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
+                  )
                     ],
                   )
                   )
