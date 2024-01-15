@@ -30,7 +30,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
           icon: const Icon(Icons.arrow_back,color: Colors.black38,)
         ),
         actions: [
-          IconButton(onPressed: (){},icon:const Icon(Icons.sort_rounded,color: Colors.black38,))
+          IconButton(onPressed: (){},icon:const Icon(Icons.delete,color: Colors.black38,))
         ],
       ),
       body: newsCollection.isEmpty ? const Center(child: CircularProgressIndicator(),):

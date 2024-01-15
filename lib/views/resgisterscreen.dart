@@ -39,6 +39,18 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
                       decoration: InputDecoration(
+                        labelText: "user name",
+                        fillColor: Colors.blueGrey[100],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10,0,10,15),
+                    child: TextFormField(
+                      decoration: InputDecoration(
                         labelText: "Email",
                         fillColor: Colors.blueGrey[100],
                         border: OutlineInputBorder(
@@ -47,51 +59,34 @@ class _ResgisterScreenState extends State<ResgisterScreen> {
                       ),
                     ),
                   ),
-                    Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 15),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Mã xác Nhận",
-                              fillColor: Colors.blueGrey[100],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(onPressed: (){},
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400],
-                        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))  
-                        ),
-                          child: Container(
-                              padding: const EdgeInsets.all(10),
-                              child: const Text("Gửi Mã",
-                              style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
-                              ),
-                            )
-                          ),  
-                      ],
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10,0,10,15),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "password",
+                        fillColor: Colors.blueGrey[100],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10,0,10,15),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "re-enter password",
+                        fillColor: Colors.blueGrey[100],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(" bạn chưa nhận được mã ?"),
-                SizedBox(width: 10,), 
-                InkWell(
-                  child: Text("Gửi lại",style: TextStyle(color: Colors.green[300]),),
-                  onTap: (){},
-                ),
-                const SizedBox(width: 20)
-              ],
-            ),
+
             const SizedBox(height: 50,),
             ElevatedButton(onPressed: ( ){
               Navigator.pushReplacement(

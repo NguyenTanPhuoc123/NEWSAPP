@@ -18,12 +18,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           icon: Icon(Icons.arrow_back), 
           onPressed: () {
             /// chuyển hướng về trang đăng ký
-            Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ),
-          );
+            Navigator.pop(context);
           },
         )
       ),
