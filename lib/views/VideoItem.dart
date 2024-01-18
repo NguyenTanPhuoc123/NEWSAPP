@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/video.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/officialScreen.dart';
@@ -104,7 +105,7 @@ class _VideoItemState extends State<VideoItem> {
                       profile(),
                       IconButton(
                       onPressed: () async{
-                        if(ControllerUser.isLogin){
+                        if(ControllerUserLogin.isLogin){
                       await Share.share("${widget.video.title}\n\n${widget.video.urlVideo}");
                         }else{
                           showDialogLogin(context);

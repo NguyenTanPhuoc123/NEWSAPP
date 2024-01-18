@@ -1,3 +1,4 @@
+import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/NotifcationScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
@@ -8,7 +9,8 @@ import 'package:doandidong/views/VideoScreen.dart';
 
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+
+  const MainScreen({super.key,});
 
   @override
   State<MainScreen> createState() => _MainScreenState();

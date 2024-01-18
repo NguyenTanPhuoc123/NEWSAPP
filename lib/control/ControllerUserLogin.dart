@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ControllerUserLogin  {
+  static bool isLogin= false;
  late TextEditingController passwordController = TextEditingController() ;
  late TextEditingController emailController = TextEditingController();
  // khởi tạo xác thực firebase 
@@ -40,6 +41,8 @@ Future<void> loadUserData(BuildContext context) async {
           password: passwordController.text
           );
          _saveUserData();
+         // 
+         isLogin = true;
           // đăng nhập thành công chuyển tới màn hình trang chủ của ứng dụng
           Navigator.pushReplacement(
         context,

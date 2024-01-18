@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
@@ -43,7 +44,7 @@ class _NewsItemState extends State<NewsItem> {
       return IconButton(
               onPressed: (){
                 setState(() {
-                  if(ControllerUser.isLogin){
+                  if(ControllerUserLogin.isLogin){
                   countLike--;
                   isFavorite = !isFavorite;
                   }
@@ -59,7 +60,7 @@ class _NewsItemState extends State<NewsItem> {
     return IconButton(
       onPressed: (){
         setState(() {
-          if(ControllerUser.isLogin){
+          if(ControllerUserLogin.isLogin){
             countLike++;
             isFavorite = !isFavorite;
           }

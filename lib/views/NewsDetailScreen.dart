@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/news.dart';
 import 'package:doandidong/model/comment.dart';
 import 'package:doandidong/model/User.dart';
@@ -156,7 +157,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               const SizedBox(width: 10),
               IconButton(
                       onPressed: () async{
-                        if(ControllerUser.isLogin){
+                        if(ControllerUserLogin.isLogin){
                       await Share.share("${widget.news.title}\n\n${widget.news.link}");
                         }else{
                           showDialogLogin(context);

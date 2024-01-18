@@ -22,14 +22,12 @@ class PersonalScreen extends StatefulWidget {
 class _PersonalScreenState extends State<PersonalScreen> {
 
 
-  item(IconData icon, String label,Widget page){
 
  final ControllerUserLogin controller = ControllerUserLogin();
-  item(IconData icon, String label,Widget Page){
-
+  item(IconData icon, String label,Widget page){
     return InkWell(
       onTap: (){
-        if(ControllerUser.isLogin){
+        if(ControllerUserLogin.isLogin){
         Navigator.push(context, MaterialPageRoute(builder:(context)=>page));
         }
         else{
@@ -91,7 +89,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         ),),
         actions: [
           IconButton(onPressed: (){
-            if(ControllerUser.isLogin){
+            if(ControllerUserLogin.isLogin){
               showDialogLogout(context);
             }
             else{
@@ -123,7 +121,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       Text("Username",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
                       InkWell(
                         onTap: (){
-                          if(ControllerUser.isLogin){
+                          if(ControllerUserLogin.isLogin){
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context)=>const PersonalInformationScreen()));
@@ -134,7 +132,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             MaterialPageRoute(builder: (context)=>const LoginScreen()));
                           }
                         },
-                        child:  Text(ControllerUser.isLogin? "Xem thông tin cá nhân":"Đăng nhập",style: TextStyle(
+                        child:  Text(ControllerUserLogin.isLogin? "Xem thông tin cá nhân":"Đăng nhập",style: TextStyle(
                           color: Colors.green[500],
                           fontSize: 14,
                           fontWeight: FontWeight.w500
@@ -206,8 +204,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
             color: Colors.grey[200],
             child: MaterialButton(
             onPressed: (){
-              if(ControllerUser.isLogin){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen()));
+              if(ControllerUserLogin.isLogin){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>const InpuNewPassWordScreeen()));
               }
               else{
                 showDialogLogin(context);
@@ -228,5 +226,4 @@ class _PersonalScreenState extends State<PersonalScreen> {
       ),
     );
   }
-}
 }

@@ -1,28 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/news.dart';
+import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key });
+   
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  var history = [
-    "Lịch nghỉ tết 2024",
-    "MU vật vã đi tim quá khứ ",
-    "Onana cầu thủ mang danh hiệu thủ thành chơi chân hay nhất "
-  ];
+  List<String> listhistory = [];
+  late TextEditingController searchController = TextEditingController(); 
+  // khoi tao listNews 
   List<News> listNews = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""),growable: true);
+  // khoi tao danh sach search 
+  List <News> listsearch= [];
   @override
   void initState() {
     super.initState();
     setState(() {
       listNews = ControllerNews.listNews;
+      listsearch = listNews;
+      loadSearchHistory();
     });
   }
+  // ham tim kiem bai viet theo ten 
+  void SearchTitle(String query) {
+    setState(() {
+      listsearch = listNews
+          .where((news) =>
+              news.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+  // ham load cac tu khoa da search
+   Future<void> loadSearchHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      listhistory = prefs.getStringList('historySearch') ?? [];
+    });
+  }
+  // ham luu tu khoa tim kiem 
+  Future<void> saveSearchHistory () async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('historySearch', listhistory);
+  } 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +59,25 @@ class _SearchScreenState extends State<SearchScreen> {
           icon: const Icon(Icons.arrow_back,color: Colors.black38,)
         ),
         title: TextField(
+          controller: searchController,
+          onChanged: (value){
+
+          },
           decoration: InputDecoration(
             hintText: "Nhập nội dung tìm kiếm"
           )
         ),
         centerTitle: true,
-        actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.search,color: Colors.black38,))],
+        actions: [IconButton(
+          onPressed: (){
+            SearchTitle(searchController.text);
+            if(!listhistory.contains(searchController.text)){
+              listhistory.add(searchController.text);
+              saveSearchHistory();
+            }
+            
+          }, 
+        icon: const Icon(Icons.search,color: Colors.black38,))],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -59,18 +99,22 @@ class _SearchScreenState extends State<SearchScreen> {
                     primary: false,
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
-                    itemCount: history.length,
+                    itemCount: 10,
                     itemBuilder: (context,index){
-                      return InkWell(
-                        onTap: (){},
+                    if(index<listhistory.length){
+                        return InkWell(
+                        onTap: (
+                          
+                        ){},
                         child: Container(
                           margin: const EdgeInsets.all(3),
-                          child: Text(history[index],style: const TextStyle(
+                          child: Text(listhistory[index],style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400
                           ),),
                         ),
                       );
+                    }
                     }
                   ),
                   
@@ -92,26 +136,28 @@ class _SearchScreenState extends State<SearchScreen> {
               primary: false,
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              itemCount: listNews.length,
+              itemCount: listsearch.length,
               itemBuilder: (context,index){
-                return Container(
+                if(index<listsearch.length&& listsearch.length>0){
+                  return Container(
                   margin: const EdgeInsets.all(5),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                    },
                     child:Row(
                       children: [
                         Container(
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage(listNews[index].urlImage),
+                            image: DecorationImage(image: NetworkImage(listsearch[index].urlImage),
                             fit: BoxFit.fill
                           ),
                         )
                         ),
                         const SizedBox(width: 5),
                         Expanded(
-                          child: Text(listNews[index].title,style: const TextStyle(
+                          child: Text(listsearch[index].title,style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500
                           ),),
@@ -120,8 +166,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     )
                   ),
                 );
+                }
               }
             )
+
           ]
         ),
       ),
