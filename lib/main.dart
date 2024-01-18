@@ -1,5 +1,8 @@
+import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/MainScreen.dart';
+import 'package:doandidong/views/PersonalInformationScreen.dart';
 import 'package:doandidong/views/resgisterscreen.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: const ResgisterScreen(),
     );
   }
 }
