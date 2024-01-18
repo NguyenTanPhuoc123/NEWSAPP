@@ -1,11 +1,14 @@
+
 import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/views/AlertDialog.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
 import 'package:doandidong/views/FavoriteScreen.dart';
 import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
+import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,7 +21,12 @@ class PersonalScreen extends StatefulWidget {
 
 class _PersonalScreenState extends State<PersonalScreen> {
 
+
   item(IconData icon, String label,Widget page){
+
+ final ControllerUserLogin controller = ControllerUserLogin();
+  item(IconData icon, String label,Widget Page){
+
     return InkWell(
       onTap: (){
         if(ControllerUser.isLogin){
@@ -89,6 +97,9 @@ class _PersonalScreenState extends State<PersonalScreen> {
             else{
               showDialogLogin(context);
             }
+
+             controller.logout(context);
+
           },
           icon: const Icon(Icons.exit_to_app,color: Colors.black38,)
         )
@@ -201,7 +212,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               else{
                 showDialogLogin(context);
               }
-            },
+            },            
             child:  const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -217,4 +228,5 @@ class _PersonalScreenState extends State<PersonalScreen> {
       ),
     );
   }
+}
 }

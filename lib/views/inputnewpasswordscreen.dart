@@ -1,4 +1,6 @@
+import 'package:doandidong/control/ControllerUserUdatepassword.dart';
 import 'package:doandidong/views/ForgotPasswordScreen.dart';
+import 'package:doandidong/views/PersonalScreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
 import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ class InpuNewPassWordScreeen extends StatefulWidget {
 }
 
 class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
+  final ControllerUserUpdatePassword controller = ControllerUserUpdatePassword();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +25,7 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => ForgotPasswordScreen(),
+                builder: (context) =>const PersonalScreen(),
               ),
             );
           },
@@ -38,9 +41,13 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
+                      controller: controller.NewsPasswordController,
                       decoration: InputDecoration(
-                        labelText: "Nhập Mật Khẩu ",
+                        labelText: "Nhập Mật Khẩu mới",
                         fillColor: Colors.blueGrey[100],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -52,8 +59,9 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
+                      controller: controller.re_NewsPasswordController,
                       decoration: InputDecoration(
-                        labelText: "Nhập Lịa Mật Khẩu Mới",
+                        labelText: "Nhập Lại Mật Khẩu Mới",
                         fillColor: Colors.blueGrey[100],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -68,7 +76,8 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
             ),
             const SizedBox(height: 50,),
             ElevatedButton(onPressed: (){
-              
+              // truyền hàm update mật khẩu 
+              controller.updatePassword(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400],
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))  
@@ -81,7 +90,6 @@ class _InpuNewPassWordScreeenState extends State<InpuNewPassWordScreeen> {
             )
             ),
             const SizedBox(height: 40,),
-            
           ],
         ),
       ),
