@@ -1,11 +1,6 @@
-import 'package:doandidong/model/Official.dart';
-import 'package:doandidong/model/Video.dart';
 import 'package:flutter/material.dart';
-import 'package:doandidong/control/ControllerNews.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/views/NewsItem.dart';
-import 'package:webfeed/webfeed.dart';
-import 'package:http/http.dart' as http;
 
 class TongHop extends StatefulWidget {
   const TongHop({super.key,required this.listNews});

@@ -1,5 +1,5 @@
 import 'package:doandidong/control/ControllerNews.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {

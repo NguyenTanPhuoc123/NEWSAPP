@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/video.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/officialScreen.dart';
@@ -35,7 +36,15 @@ class _VideoItemState extends State<VideoItem> {
       alignment: Alignment.bottomCenter,
       children: [
         InkWell(
-          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen())),
+          onTap: (){
+            var official;
+                    setState(() {
+                      official = ControllerOfficial.getOfficialByName(widget.video.author);
+                    });
+                    if(official!=null){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
+                    }
+          },
           child: Container(
             height: 50,
             width: 50,
@@ -50,7 +59,18 @@ class _VideoItemState extends State<VideoItem> {
           bottom: -8,
           child: Container(
           decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(25)),
-          child:  InkWell(onTap: (){},child: const Icon(Icons.add)),
+          child:  InkWell(onTap: (){
+            setState(() {
+              if(ControllerUser.isLogin){
+              statusFollow=!statusFollow;
+              
+              }
+              else{
+                showDialogLogin(context);
+              }
+
+            });
+          },child: const Icon(Icons.add)),
         ))
       ],
     );
@@ -99,7 +119,7 @@ class _VideoItemState extends State<VideoItem> {
                   height:MediaQuery.of(context).size.height/1.75,
                   color: Colors.transparent,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       profile(),
                       IconButton(
@@ -110,8 +130,9 @@ class _VideoItemState extends State<VideoItem> {
                           showDialogLogin(context);
                         }
                       },
-                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
-                  )
+                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.white,size: 22,),
+                  ),
+                  
                     ],
                   )
                   )

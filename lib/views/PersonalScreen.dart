@@ -6,6 +6,7 @@ import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
+import 'package:doandidong/views/followScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -150,7 +151,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   item(Icons.history,"Lịch sử đọc",const HistoryScreen()),
-                  item(Icons.list_alt,"Đang theo dõi",const FavoriteScreen()), 
+                  item(Icons.list_alt,"Đang theo dõi",const FollowScreen()), 
                 ],
               ),
             ),

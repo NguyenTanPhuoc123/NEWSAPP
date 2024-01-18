@@ -1,12 +1,14 @@
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class ControllerNews{
-  static const URL = "https://vnexpress.net/rss/tin-xem-nhieu.rss";
+  static late SharedPreferences preferences;
   static List<News> listNews = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""),growable: true);
- static Future<RssFeed> loadFeed(String url) async{
+  static List<News> listNewsCollection = List.filled(0,News("","",List.empty(),"","","","",""),growable: true);
+  static Future<RssFeed> loadFeed(String url) async{
     try{
       final client = http.Client();
       final res = await client.get(Uri.parse(url));
@@ -49,6 +51,16 @@ static getImg(String? description){
       
   }
 
+  static List<News> getListNewsByOfficial(String official){
+      List<News> listNewsByOfficial = List.filled(0,News("","",List.empty(),"","","","",""),growable: true);
+      
+      for (var news in listNews) {
+        if(news.author.compareTo(official)==0){
+          listNewsByOfficial.add(news);
+        }
+      }
+      return listNewsByOfficial;
+  }
 
   static Future<List<String>> getContent(String url) async{
     List<String> contents = List.filled(0,"",growable: true);
@@ -82,5 +94,6 @@ static getImg(String? description){
   return "";
   
   }
-
+  
 }
+

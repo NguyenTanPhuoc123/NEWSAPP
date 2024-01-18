@@ -1,3 +1,5 @@
+import 'package:doandidong/control/ControllerOfficial.dart';
+import 'package:doandidong/model/Official.dart';
 import 'package:flutter/material.dart';
 
 class FollowScreen extends StatefulWidget {
@@ -8,6 +10,16 @@ class FollowScreen extends StatefulWidget {
 }
 
 class _FollowScreenState extends State<FollowScreen> {
+  List<Official> officials = List.filled(0,Official("","","","","","","",""),growable: true);
+  @override
+  void initState() {
+    super.initState();
+    ControllerOfficial.getListOfficial().then((_){
+      setState(() {
+        officials = ControllerOfficial.officials;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,63 +32,40 @@ class _FollowScreenState extends State<FollowScreen> {
         ),
         
       ),
-      body: SingleChildScrollView(
-        child: Column(
-                children: [
-        Expanded(
-          child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                    child: Row(children: [
-                  Column(children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: NetworkImage(followList[index].imgUrl),
-                              fit: BoxFit.fill)),
-                    )
-                  ]),
-                  const SizedBox(width: 5),
-                  Text(
-                    followList[index].name,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                      child: Container(
-                    child: IconButton(
-                        icon: Icon(Icons.done_all), onPressed: () {}),
-                  ))
-                ]));
-              }),
-        )
-                ],
+      body: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: officials.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              width: 100,
+              height: 100,
+              alignment: Alignment.center,
+              color: Colors.grey[200],
+              child: Row(         
+              children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(officials[index].urlLogo),
+                        fit: BoxFit.fill)),
               ),
-      ),
+              const SizedBox(width: 5,),
+              Text(
+                officials[index].name,
+                textAlign: TextAlign.start,
+                style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
+              ),
+              Expanded(
+                child: IconButton(
+                    icon: const Icon(Icons.done_all), onPressed: () {}),
+              )
+            ]));
+          }),
     );
   }
 }
 
-class Following {
-  String name;
-  String imgUrl;
-
-  Following(this.name, this.imgUrl);
-}
-
-List followList = [
-  Following('ethelmarquise',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZnQiD69bG6hrFl6x5vv6wiT3n5Tp_QOaPpfLFJoYgIw&s'),
-  Following('TheMetaBarbie',
-      'https://gocnhinso.com/wp-content/uploads/2022/12/meme-meo-hai-6.jpeg'),
-  Following('pthchuc208779',
-      'https://i.pinimg.com/736x/56/98/ac/5698ac3f37f7e5c727436d2335fa9df5.jpg'),
-  Following('vutuyetquan88',
-      'https://inkythuatso.com/uploads/thumbnails/800/2022/05/d1e79464f826d4d4be4e051973b85fda-12-14-57-01.jpg'),
-  Following('L_univers2904',
-      'https://afamilycdn.com/150157425591193600/2020/5/25/90090530211769606724281311815109567084919n-1590403790698636845403.jpg'),
-];

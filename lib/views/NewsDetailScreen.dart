@@ -1,5 +1,7 @@
 import 'package:doandidong/control/ControlUser.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/control/ControllerNews.dart';
+import 'package:doandidong/control/NewsDB.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/model/comment.dart';
 import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/AlertDialog.dart';
@@ -25,7 +27,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     Comment(User("","","Trường Phạm","",true),"1/1/2024","Hay lắm!!!"),
     Comment(User("","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
-  
+
   addComment(Comment comment){
     comments.insert(0,comment);
   }
@@ -141,6 +143,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               IconButton(
                 onPressed: (){
+                    NewsDB().create(widget.news);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Đã thêm vào bộ sưu tập"),
