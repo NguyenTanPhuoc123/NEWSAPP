@@ -1,8 +1,10 @@
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
 import 'package:doandidong/views/FavoriteScreen.dart';
 import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
+import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -14,7 +16,7 @@ class PersonalScreen extends StatefulWidget {
 }
 
 class _PersonalScreenState extends State<PersonalScreen> {
-
+ final ControllerUserLogin controller = ControllerUserLogin();
   item(IconData icon, String label,Widget Page){
     return InkWell(
       onTap: ()=> Navigator.push(context, MaterialPageRoute(builder:(context)=>Page)),
@@ -72,7 +74,9 @@ class _PersonalScreenState extends State<PersonalScreen> {
           fontWeight: FontWeight.w600
         ),),
         actions: [
-          IconButton(onPressed: (){},
+          IconButton(onPressed: (){
+             controller.logout(context);
+          },
           icon: const Icon(Icons.exit_to_app,color: Colors.black38,)
         )
         ],
@@ -170,7 +174,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
             width: MediaQuery.of(context).size.width,
             color: Colors.grey[200],
             child: MaterialButton(
-            onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const ForgotPasswordScreen())),
+            onPressed: ()=> Navigator.push(context,MaterialPageRoute(builder: (context)=>const InpuNewPassWordScreeen())),
             child:  const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -42,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // cập nhập thay đổi 
+        automaticallyImplyLeading: false,
         title: const Text("VNEWS",style: TextStyle(
           color: Color.fromRGBO(75, 177, 73, 1),
           fontSize: 24,
