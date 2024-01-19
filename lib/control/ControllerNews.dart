@@ -4,6 +4,7 @@ import 'package:html/parser.dart' as htmlParser;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 class ControllerNews{
   static late SharedPreferences preferences;
   static List<News> listNews = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""),growable: true);
@@ -95,5 +96,22 @@ static getImg(String? description){
   
   }
   
+  static Future<void> init() async{
+    preferences = await SharedPreferences.getInstance();
+  }
+
+  static loadListNewsFromJson(String key) {
+      final jsonListString = preferences.getStringList(key);
+      if(jsonListString!=null){
+        final jsonList = jsonListString.map((jsonString) => json.decode(jsonString)).toList(); 
+        listNewsCollection = jsonList.map((jsonMap) => News.fromJson(jsonMap)).toList();
+      }
+  }
+
+  static Future<void> addNewsToCollection(String key,News news) async{
+    final jsonMap = news.toJson();
+    final jsonString = json.encode(jsonMap);
+    await preferences.setString(key,jsonString);
+  }
 }
 

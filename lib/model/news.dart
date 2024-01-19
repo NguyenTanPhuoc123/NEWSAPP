@@ -21,7 +21,7 @@ class News{
 
   News.fromJson(Map<String,dynamic> json): title = json['title']??"",
                                            urlLogo = json['urlLogo']??"",
-                                           contents = List<String>.from(json['contents']??[]),
+                                           contents = List<String>.from(json['contents']??[])??List.empty(growable: true),
                                            description = json['description']??"",
                                            pushDate=json["pushDate"]?? "",
                                            author = json['author']??"",

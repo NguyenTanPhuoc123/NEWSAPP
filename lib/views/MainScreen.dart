@@ -39,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
     body: _widgetOptions.elementAt(_selectedIndex),
     bottomNavigationBar: 

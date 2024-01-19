@@ -34,7 +34,7 @@ class _OfficialScreenState extends State<OfficialScreen> {
           });
         },
         icon: const Icon(
-          Icons.add,
+          Icons.add_circle_outline,
           color: Colors.green,
         ));
     }

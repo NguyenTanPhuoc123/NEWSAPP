@@ -1,3 +1,5 @@
+import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/resgisterscreen.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final ControllerUserLogin controller = ControllerUserLogin();
+    @override
+  void initState() {
+    super.initState();
+    controller.loadUserData(context);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
+                      controller: controller.emailController,
                       decoration: InputDecoration(
                         labelText: "Email",
                         fillColor: Colors.blueGrey[100],
@@ -51,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
+                      controller: controller.passwordController,
                       decoration: InputDecoration(
                         labelText: "Mật khẩu",
                         fillColor: Colors.blueGrey[100],
@@ -58,6 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(20),
                         )
                       ),
+                      validator: (value){
+                        if(value==null && controller.passwordController.text.isEmpty){
+                          return 'khong duoc bo trong email';
+                        }
+                      },
                       obscureText: true,
                       obscuringCharacter: "•",
                     ),
@@ -84,7 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const SizedBox(height: 50,),
-            ElevatedButton(onPressed: (){},
+            ElevatedButton(onPressed: (){
+              // sự kiện sử lí đăng nhập
+              controller.loginUser(context);
+              
+            },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400],
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))  
             ),

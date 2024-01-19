@@ -1,3 +1,4 @@
+import 'package:doandidong/control/ControllerUserUdatepassword.dart';
 import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:doandidong/views/loginscreen.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final ControllerUserUpdatePassword controller = ControllerUserUpdatePassword();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +19,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           leading: IconButton(
           icon: Icon(Icons.arrow_back), 
           onPressed: () {
-            /// chuyển hướng về trang đăng ký
-            Navigator.pop(context);
+            /// chuyển hướng về trang đăng nhập
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>const LoginScreen(),
+              ),
+            );
           },
         )
       ),
@@ -33,6 +40,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10,0,10,15),
                     child: TextFormField(
+                      controller: controller.emailController,
                       decoration: InputDecoration(
                         labelText: "Email",
                         fillColor: Colors.blueGrey[100],
@@ -43,48 +51,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                   SizedBox(height: 30,),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 15),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Mã xác Nhận",
-                              fillColor: Colors.blueGrey[100],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(onPressed: (){},
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400],
-                        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))  
-                        ),
-                          child: Container(
-                              padding: const EdgeInsets.all(10),
-                              child: const Text("Gửi Mã",
-                              style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
-                              ),
-                            )
-                          ),  
-                      ],
-                    ),
-                  ),
                 ],
               )
             ),
             const SizedBox(height: 50,),
             ElevatedButton(onPressed: (){
+              // hảm gửi thông báo resetpassword 
+              controller.sendPasswordResetEmail(controller.emailController.text, context);
               // chuyển sang màn hình nhập lại mật khẩu 
-              Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InpuNewPassWordScreeen(),
-              ),
-            );
+            //   Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => InpuNewPassWordScreeen(),
+            //   ),
+            // );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400],
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))  

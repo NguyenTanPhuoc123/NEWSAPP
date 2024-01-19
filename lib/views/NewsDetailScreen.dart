@@ -1,6 +1,5 @@
 import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/control/ControllerNews.dart';
-import 'package:doandidong/control/NewsDB.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/model/comment.dart';
 import 'package:doandidong/model/User.dart';
@@ -71,6 +70,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
       );
   }
+
+  initiallizePrefs() async{
+    await ControllerNews.init();
+    ControllerNews.addNewsToCollection('listNews',widget.news);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,7 +148,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               IconButton(
                 onPressed: (){
-                    NewsDB().create(widget.news);
+                    initiallizePrefs();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Đã thêm vào bộ sưu tập"),

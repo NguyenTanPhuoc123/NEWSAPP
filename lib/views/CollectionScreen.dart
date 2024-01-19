@@ -15,15 +15,16 @@ class _CollectionScreenState extends State<CollectionScreen> {
   @override
   void initState() {
     super.initState();
+    _initiallizePrefs();
+  }
+  _initiallizePrefs() async{
+    await ControllerNews.init();
     setState(() {
-      ControllerNews.loadListNewsFromJson().then((value){
-        setState(() {
-          newsCollection = ControllerNews.listNewsCollection;
-        });
-        
-      });
+    ControllerNews.loadListNewsFromJson('listNews');
+    newsCollection = ControllerNews.listNewsCollection;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
