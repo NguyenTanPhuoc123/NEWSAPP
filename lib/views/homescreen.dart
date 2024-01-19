@@ -9,7 +9,7 @@ import 'package:webfeed/webfeed.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.w600
         ),),
         actions: [
-          IconButton(onPressed: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchScreen())),
+          IconButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchScreen()));},
           icon: const Icon(Icons.search,color: Color.fromRGBO(85, 80, 80, 1),))
         ],
       ),  
