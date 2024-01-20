@@ -44,6 +44,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 color: Colors.black38,
               )),
         ),
+<<<<<<< HEAD
         body: newsCollection.isEmpty
             ? const Center(
                 child: Text(
@@ -56,5 +57,21 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 itemBuilder: (context, index) {
                   return NewsCollectionItem(news: newsCollection[index]);
                 }));
+=======
+      ),
+      body: newsCollection.isEmpty ? const Center(child: Text("Chưa có tin nào được lưu",style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w300
+      ),)):
+      ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: newsCollection.length,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context,index){
+          return NewsCollectionItem(news: newsCollection[index]);
+        }
+      )
+    );
+>>>>>>> d2c838c18192b22f236275e636fccb95a396dedd
   }
 }

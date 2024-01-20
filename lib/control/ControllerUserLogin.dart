@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ControllerUserLogin  {
-  static bool isLogin= true;
+  static bool isLogin= false;
  late TextEditingController passwordController = TextEditingController() ;
  late TextEditingController emailController = TextEditingController();
  // khởi tạo xác thực firebase 
@@ -58,13 +58,13 @@ Future<void> loadUserData(BuildContext context) async {
      }catch(e)
      {
         ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(' đăng nhập không thành công')),);
+        SnackBar(content: Text('Đăng nhập không thành công')),);
      }
   }
   void checkuser (BuildContext context) {
     if(emailController.text.isNotEmpty&& passwordController.text.isNotEmpty){
               ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('email hoặc mật khảu bị sai')),);
+        SnackBar(content: Text('Email hoặc mật khẩu không chính xác')),);
     }
   }
     // xóa thông tin user 

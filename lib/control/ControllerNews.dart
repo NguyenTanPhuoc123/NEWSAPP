@@ -111,9 +111,25 @@ class ControllerNews {
       if (res.statusCode == 200) {
         final document = htmlParser.parse(res.body);
         final elements = document.getElementsByClassName("Normal");
+<<<<<<< HEAD
         for (var content in elements) {
           contents.add(content.text);
         }
+=======
+        if (elements.isNotEmpty) {
+            for (var content in elements){
+              contents.add(content.text);    
+          }
+        }
+        else{
+          var lst = document.getElementsByClassName('edittor-content box-cont mt15 clearfix');
+          for (var element in lst) {
+          var lstcontent =  element.querySelectorAll('p'); 
+            contents = lstcontent.map((content) => content.text).toList(); 
+        }
+        }
+        
+>>>>>>> d2c838c18192b22f236275e636fccb95a396dedd
       }
     } catch (e) {
       throw e;
@@ -127,6 +143,7 @@ class ControllerNews {
 
   static String getDescription(String? descriptionRss) {
     int start = descriptionRss!.indexOf('</br>');
+<<<<<<< HEAD
     if (start != -1) {
       return descriptionRss.substring(start + 5, descriptionRss.length);
     }
@@ -134,6 +151,21 @@ class ControllerNews {
   }
 
   static Future<void> init() async {
+=======
+    int end   = descriptionRss.lastIndexOf(' ]]>');
+  if (start!=-1 && end!=-1) {
+      return descriptionRss.substring(start+5,end); 
+  }
+  else if(start!=-1 && end==-1){
+    return descriptionRss.substring(start+5,descriptionRss.length);
+  }
+  
+  return "";
+  
+  }
+  
+  static Future<void> init() async{
+>>>>>>> d2c838c18192b22f236275e636fccb95a396dedd
     preferences = await SharedPreferences.getInstance();
   }
 

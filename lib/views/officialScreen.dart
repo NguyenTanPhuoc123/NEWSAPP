@@ -1,4 +1,5 @@
 import 'package:doandidong/control/ControllerNews.dart';
+import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/Official.dart';
 import 'package:flutter/material.dart';
 import 'package:doandidong/views/officialScrTH.dart';
@@ -12,12 +13,22 @@ class OfficialScreen extends StatefulWidget {
 }
 
 class _OfficialScreenState extends State<OfficialScreen> {
-  bool status = true;
+  late bool status;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      status = ControllerOfficial.isFollowing(widget.official);
+    });
+  }
+
   iconFollowing() {
     if (status == true) {
       return IconButton(
           onPressed: () {
             setState(() {
+              ControllerOfficial.removeUserForChannel(widget.official);
               status = false;
             });
           },
@@ -29,6 +40,7 @@ class _OfficialScreenState extends State<OfficialScreen> {
       return IconButton(
           onPressed: () {
             setState(() {
+              ControllerOfficial.addUserForChannel(widget.official);
               status = true;
             });
           },
