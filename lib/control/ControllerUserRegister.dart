@@ -11,7 +11,6 @@ class ControllerUserRegister {
  late TextEditingController emailController = TextEditingController();
  late TextEditingController userNameController = TextEditingController() ;
  late TextEditingController re_PaswordController = TextEditingController();
- late TextEditingController otpController = TextEditingController();
   // khởi tạo các plugin firebase
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -24,6 +23,7 @@ class ControllerUserRegister {
         email: emailController.text, 
         password: passwordController.text
         );
+        await credential.user?.updateProfile(displayName: userNameController.text);
           await _firestore.collection('users').doc(credential.user?.uid).set({
           'email': emailController.text,
           'userName': userNameController.text,

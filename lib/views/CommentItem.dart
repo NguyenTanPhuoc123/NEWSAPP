@@ -24,8 +24,7 @@ class CommentItem extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(image: NetworkImage("https://anvientv.com.vn/uploads/upload/1675741738_hinh-chu-tieu(3).jpg"),fit: BoxFit.fill),
               shape: BoxShape.circle
-            ),
-              
+            ),              
           ),
         ),
         const Divider(color: Colors.black26,)

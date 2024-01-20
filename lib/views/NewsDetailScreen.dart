@@ -26,7 +26,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     Comment(User("","","Trường Phạm","",true),"1/1/2024","Hay lắm!!!"),
     Comment(User("","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
-  
+   
   addComment(Comment comment){
     comments.insert(0,comment);
   }
@@ -193,7 +193,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     ),
                     const SizedBox(width: 10,),
                     IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         addComment(
                           Comment(

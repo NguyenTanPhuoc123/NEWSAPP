@@ -27,9 +27,11 @@ Future<void> loadUserData(BuildContext context) async {
   }
 }
   // lưu thông tin user đăng nhập 
-  _saveUserData(){
+  _saveUserData(User user){
     prefs?.setString('email', emailController.text);
     prefs?.setString('password', passwordController.text);
+        prefs?.setString('uid', user.uid);
+    prefs?.setString('displayName', user.displayName ?? '');
   }
 
   //hàm đăng nhập user bằng auth của firebase 
@@ -40,9 +42,12 @@ Future<void> loadUserData(BuildContext context) async {
           email: emailController.text,
           password: passwordController.text
           );
-         _saveUserData();
+         _saveUserData(userCredential.user!);
+         
          // 
          isLogin = true;
+          print("User UID: ${userCredential.user?.uid}");
+          print("User DisplayName: ${userCredential.user?.displayName}");
           // đăng nhập thành công chuyển tới màn hình trang chủ của ứng dụng
           Navigator.pushReplacement(
         context,
@@ -54,7 +59,6 @@ Future<void> loadUserData(BuildContext context) async {
           SnackBar(content: Text('Đăng nhập thành công')
           
         ));
-        print(_saveUserData());
      }catch(e)
      {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -85,4 +89,6 @@ Future<void> loadUserData(BuildContext context) async {
       ),
     );
   }
+  // lấy thông tin user 
+
 }
