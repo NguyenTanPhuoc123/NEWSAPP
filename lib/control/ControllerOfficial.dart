@@ -1,5 +1,7 @@
 import 'package:doandidong/model/Official.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doandidong/model/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ControllerOfficial{
   static List<Official> officials = List.filled(0,Official("","","","","","","","",[]),growable: true);
@@ -28,15 +30,37 @@ class ControllerOfficial{
   }
 
   static List<Official> getListOfficialByUser(String email){
-    List<Official> listOfficial= List.filled(0,Official("","","","","","","","",[]),growable: true);
-    for (var channel in listOfficial) {
+    List<Official> list= List.filled(0,Official("","","","","","","","",[]),growable: true);
+    for (var channel in officials) {
         for (var emailUser in channel.following) {
           if(emailUser.compareTo(email)==0){
-            listOfficial.add(channel);
+            list.add(channel);
           }
         }
     }
-    return listOfficial;
+    return list;
+  }
+
+  static addUserForChannel(Official official){
+    FirebaseAuth auth = FirebaseAuth.instance;
+    print(auth.currentUser!.email.toString());
+    official.following.add(auth.currentUser!.email.toString());
+  }
+
+  static removeUserForChannel(Official official){
+    FirebaseAuth auth = FirebaseAuth.instance;
+    print(auth.currentUser!.email.toString());
+    official.following.remove(auth.currentUser!.email.toString());
+  }
+
+  static bool isFollowing(Official official){
+    FirebaseAuth auth = FirebaseAuth.instance;
+    for (String email in official.following) {
+        if(auth.currentUser!.email!.compareTo(email)==0){
+          return true;
+        }
+    }
+    return false;
   }
 
 }

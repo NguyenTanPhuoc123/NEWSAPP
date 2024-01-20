@@ -12,11 +12,6 @@ class NewsCollectionItem extends StatefulWidget {
 
 class _NewsCollectionItemState extends State<NewsCollectionItem> {
 
-  _removeNews(News news){
-    ControllerNews.removeNewsFromCollection('listNews', news);
-    
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +38,7 @@ class _NewsCollectionItemState extends State<NewsCollectionItem> {
                 ),
               ),
               Expanded(child: IconButton(
-                onPressed: _removeNews(widget.news),
+                onPressed: (){ControllerNews.removeNewsFromCollection('listNews', widget.news);},
                 icon: const Icon(Icons.delete),color: Colors.black38,)
               )
             ],

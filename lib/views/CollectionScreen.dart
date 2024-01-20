@@ -44,6 +44,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
       ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: newsCollection.length,
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context,index){
           return NewsCollectionItem(news: newsCollection[index]);
         }

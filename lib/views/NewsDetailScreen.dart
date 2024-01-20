@@ -120,14 +120,19 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   fontWeight: FontWeight.w500
                 ),
           ),
-          Container(
-            width: 300,
-            height: 300,
-            margin: const EdgeInsets.fromLTRB(5,0,5,10),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.cover)
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width-10,
+                height: 300,
+                margin: const EdgeInsets.fromLTRB(5,0,5,10),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.cover)
+                ),
+              ),
+            ],
           ),
           ListView.builder(
             primary: false,

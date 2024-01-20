@@ -1,5 +1,6 @@
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/Official.dart';
+import 'package:doandidong/views/officialScreen.dart';
 import 'package:flutter/material.dart';
 
 class FollowScreen extends StatefulWidget {
@@ -14,10 +15,8 @@ class _FollowScreenState extends State<FollowScreen> {
   @override
   void initState() {
     super.initState();
-    ControllerOfficial.getListOfficial().then((_){
-      setState(() {
-        officials = ControllerOfficial.officials;
-      });
+    setState(() {
+      officials = ControllerOfficial.getListOfficialByUser("danhkbm12@gmail.com");
     });
   }
   @override
@@ -36,33 +35,36 @@ class _FollowScreenState extends State<FollowScreen> {
           scrollDirection: Axis.vertical,
           itemCount: officials.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              width: 100,
-              height: 100,
-              alignment: Alignment.center,
-              color: Colors.grey[200],
-              child: Row(         
-              children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(officials[index].urlLogo),
-                        fit: BoxFit.fill)),
-              ),
-              const SizedBox(width: 5,),
-              Text(
-                officials[index].name,
-                textAlign: TextAlign.start,
-                style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
-              ),
-              const Expanded(
-                child: Icon(Icons.done_all),
-              )
-            ]));
+            return InkWell(
+              onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: officials[index]))),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                width: 100,
+                height: 100,
+                alignment: Alignment.center,
+                color: Colors.grey[200],
+                child: Row(         
+                children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: NetworkImage(officials[index].urlLogo),
+                          fit: BoxFit.fill)),
+                ),
+                const SizedBox(width: 5,),
+                Text(
+                  officials[index].name,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
+                ),
+                const Expanded(
+                  child: Icon(Icons.done_all),
+                )
+              ])),
+            );
           }),
     );
   }

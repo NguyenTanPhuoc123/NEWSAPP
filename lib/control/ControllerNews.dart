@@ -107,10 +107,18 @@ static getImg(String? description){
       if(res.statusCode==200){
         final document = htmlParser.parse(res.body);
         final elements = document.getElementsByClassName("Normal");
-          for (var content in elements){
-              contents.add(content.text);
-              
+        if (elements.isNotEmpty) {
+            for (var content in elements){
+              contents.add(content.text);    
           }
+        }
+        else{
+          var lst = document.getElementsByClassName('edittor-content box-cont mt15 clearfix');
+          for (var element in lst) {
+          var lstcontent =  element.querySelectorAll('p'); 
+            contents = lstcontent.map((content) => content.text).toList(); 
+        }
+        }
         
       }
     }catch(e){
@@ -126,9 +134,14 @@ static getImg(String? description){
 
   static String getDescription(String? descriptionRss){
     int start = descriptionRss!.indexOf('</br>');
-  if (start!=-1) {
-      return descriptionRss.substring(start+5,descriptionRss.length); 
+    int end   = descriptionRss.lastIndexOf(' ]]>');
+  if (start!=-1 && end!=-1) {
+      return descriptionRss.substring(start+5,end); 
   }
+  else if(start!=-1 && end==-1){
+    return descriptionRss.substring(start+5,descriptionRss.length);
+  }
+  
   return "";
   
   }
