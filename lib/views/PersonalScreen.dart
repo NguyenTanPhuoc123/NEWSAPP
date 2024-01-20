@@ -1,4 +1,3 @@
-import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
@@ -7,6 +6,7 @@ import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
+import 'package:doandidong/views/followScreen.dart';
 import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,7 +23,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
   item(IconData icon, String label, Widget page) {
     return InkWell(
       onTap: () {
-        if (ControllerUser.isLogin) {
+        if (ControllerUserLogin.isLogin) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => page));
         } else {
@@ -73,37 +73,36 @@ class _PersonalScreenState extends State<PersonalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "CÁ NHÂN",
-          style: TextStyle(
-              color: Color.fromRGBO(75, 177, 73, 1),
-              fontSize: 24,
-              fontWeight: FontWeight.w600),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                if (ControllerUser.isLogin) {
-                  showDialogLogout(context);
-                } else {
-                  showDialogLogin(context);
-                }
+        appBar: AppBar(
+          title: const Text(
+            "CÁ NHÂN",
+            style: TextStyle(
+                color: Color.fromRGBO(75, 177, 73, 1),
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  if (ControllerUserLogin.isLogin) {
+                    showDialogLogout(context);
+                  } else {
+                    showDialogLogin(context);
+                  }
 
-                controller.logout(context);
-              },
-              icon: const Icon(
-                Icons.exit_to_app,
-                color: Colors.black38,
-              ))
-        ],
-      ),
-      body: Column(children: [
-        Container(
-          color: Colors.grey[200],
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+                  controller.logout(context);
+                },
+                icon: const Icon(
+                  Icons.exit_to_app,
+                  color: Colors.black38,
+                ))
+          ],
+        ),
+        body: Column(children: [
+          Container(
+            color: Colors.grey[200],
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const SizedBox(
                 height: 5,
               ),
@@ -124,7 +123,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          if (ControllerUser.isLogin) {
+                          if (ControllerUserLogin.isLogin) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -138,7 +137,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                           }
                         },
                         child: Text(
-                          ControllerUser.isLogin
+                          ControllerUserLogin.isLogin
                               ? "Xem thông tin cá nhân"
                               : "Đăng nhập",
                           style: TextStyle(
@@ -162,25 +161,20 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 50),
-                child: Row(
+            ]),
+          ),
+          Container(
+              margin: const EdgeInsets.only(top: 50),
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     item(Icons.history, "Lịch sử đọc", const HistoryScreen()),
-                    item(Icons.list_alt, "Đang theo dõi",
-                        const FavoriteScreen()),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 40),
-          color: Colors.grey[200],
-          child: Column(
-            children: [
+                    item(Icons.list_alt, "Đang theo dõi", const FollowScreen()),
+                  ])),
+          Container(
+            margin: const EdgeInsets.only(top: 40),
+            color: Colors.grey[200],
+            child: Column(children: [
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -193,53 +187,40 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   )
                 ],
               ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ]),
+          ),
+          const SizedBox(height: 50),
+          Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.grey[200],
+            child: MaterialButton(
+              onPressed: () {
+                if (ControllerUserLogin.isLogin) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const InpuNewPassWordScreeen()));
+                } else {
+                  showDialogLogin(context);
+                }
+              },
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  statistical(FontAwesomeIcons.newspaper, "Khám phá", 11000),
-                  statistical(FontAwesomeIcons.heart, "Lượt thích", 11000),
-                  statistical(Icons.list_alt, "Theo dõi", 11000),
+                  Text(
+                    "Đổi mật khẩu",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.black38,
+                  )
                 ],
               ),
-              const SizedBox(
-                height: 32,
-              )
-            ],
-          ),
-        ),
-        const SizedBox(height: 50),
-        Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.grey[200],
-          child: MaterialButton(
-            onPressed: () {
-              if (ControllerUser.isLogin) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ForgotPasswordScreen()));
-              } else {
-                showDialogLogin(context);
-              }
-            },
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Đổi mật khẩu",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.black38,
-                )
-              ],
             ),
           ),
-        )
-      ]),
-    );
+        ]));
   }
 }

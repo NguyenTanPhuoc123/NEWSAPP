@@ -17,7 +17,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     super.initState();
     setState(() {
-      newsHistorys = ControllerNews.listNews;
+      newsHistorys = ControllerNews.listNews.cast<News>();
     });
   }
 

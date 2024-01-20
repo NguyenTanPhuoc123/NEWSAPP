@@ -1,7 +1,9 @@
-import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/news.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
+import 'package:doandidong/views/officialScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -35,7 +37,7 @@ class _NewsItemState extends State<NewsItem> {
       return IconButton(
           onPressed: () {
             setState(() {
-              if (ControllerUser.isLogin) {
+              if (ControllerUserLogin.isLogin) {
                 countLike--;
                 isFavorite = !isFavorite;
               } else {
@@ -52,7 +54,7 @@ class _NewsItemState extends State<NewsItem> {
     return IconButton(
         onPressed: () {
           setState(() {
-            if (ControllerUser.isLogin) {
+            if (ControllerUserLogin.isLogin) {
               countLike++;
               isFavorite = !isFavorite;
             } else {
@@ -83,7 +85,7 @@ class _NewsItemState extends State<NewsItem> {
       child: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: Color.fromRGBO(246, 238, 238, 1),
+            color: const Color.fromRGBO(246, 238, 238, 1),
             borderRadius: BorderRadius.circular(18)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -111,20 +113,52 @@ class _NewsItemState extends State<NewsItem> {
             Row(
               children: [
                 const SizedBox(width: 3),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: NetworkImage(widget.news.urlLogo),
-                          fit: BoxFit.fill)),
+                InkWell(
+                  onTap: () {
+                    var official;
+                    setState(() {
+                      official = ControllerOfficial.getOfficialByName(
+                          widget.news.author);
+                    });
+                    if (official != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OfficialScreen(official: official)));
+                    }
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: NetworkImage(widget.news.urlLogo),
+                            fit: BoxFit.fill)),
+                  ),
                 ),
                 const SizedBox(width: 3),
-                Text(
-                  widget.news.author,
-                  style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w600),
+                InkWell(
+                  onTap: () {
+                    var official;
+                    setState(() {
+                      official = ControllerOfficial.getOfficialByName(
+                          widget.news.author);
+                    });
+                    if (official != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OfficialScreen(official: official)));
+                    }
+                  },
+                  child: Text(
+                    widget.news.author,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w600),
+                  ),
                 ),
                 Expanded(
                     child: Row(
@@ -135,32 +169,16 @@ class _NewsItemState extends State<NewsItem> {
                       formatCount(countLike),
                       style: const TextStyle(fontSize: 16),
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      NewsDetailScreen(news: widget.news))),
-                          icon:
-                              const FaIcon(FontAwesomeIcons.comment, size: 16),
-                        ),
-                      ],
-                    ),
-                    Text(formatCount(countComment),
-                        style: const TextStyle(fontSize: 16)),
-                    IconButton(
-                      onPressed: () async {
-                        await Share.share(
-                            "${widget.news.title}\n\n${widget.news.link}");
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.share,
-                        color: Colors.black38,
-                        size: 16,
+                    Row(children: [
+                      IconButton(
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NewsDetailScreen(news: widget.news))),
+                        icon: const FaIcon(FontAwesomeIcons.comment, size: 16),
                       ),
-                    )
+                    ])
                   ],
                 ))
               ],
