@@ -61,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
         title: TextField(
           controller: searchController,
           onChanged: (value){
-
+            SearchTitle(value);
           },
           decoration: InputDecoration(
             hintText: "Nhập nội dung tìm kiếm"

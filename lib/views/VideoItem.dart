@@ -1,4 +1,3 @@
-import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/video.dart';
@@ -31,52 +30,6 @@ class _VideoItemState extends State<VideoItem> {
   @override
   Widget build(BuildContext context) {
     bool statusFollow = false;
-    profile(){
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.bottomCenter,
-      children: [
-        InkWell(
-          onTap: (){
-            var official;
-                    setState(() {
-                      official = ControllerOfficial.getOfficialByName(widget.video.author);
-                    });
-                    if(official!=null){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
-                    }
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              image: const DecorationImage(image: NetworkImage("https://yt3.googleusercontent.com/XTzHGB7Bm3Ph8pipyaV7-UpeQVngLs9PZCNtpZ-T2HYe7380UttfvHUI4c7NYgA1Z1NjcZX-Wm8=s176-c-k-c0x00ffffff-no-rj"),fit: BoxFit.fill)
-            ),
-          ),
-        ),
-        if(!statusFollow)
-        Positioned(
-          bottom: -8,
-          child: Container(
-          decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(25)),
-          child:  InkWell(onTap: (){
-            setState(() {
-              if(ControllerUser.isLogin){
-              statusFollow=!statusFollow;
-              
-              }
-              else{
-                showDialogLogin(context);
-              }
-
-            });
-          },child: const Icon(Icons.add)),
-        ))
-      ],
-    );
-  }
-
 
     return Stack(
         alignment: Alignment.bottomCenter,
@@ -120,9 +73,8 @@ class _VideoItemState extends State<VideoItem> {
                   height:MediaQuery.of(context).size.height/1.75,
                   color: Colors.transparent,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      profile(),
                       IconButton(
                       onPressed: () async{
                         if(ControllerUserLogin.isLogin){

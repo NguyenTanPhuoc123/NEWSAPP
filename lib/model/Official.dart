@@ -10,7 +10,8 @@ class Official{
   String phone;
   String website;
   String description;
-  Official(this.id,this.urlLogo,this.name,this.description,this.address,this.email,this.phone,this.website);
+  List<dynamic> following;
+  Official(this.id,this.urlLogo,this.name,this.description,this.address,this.email,this.phone,this.website,this.following);
   factory Official.fromDocumentSnapshot(DocumentSnapshot snapshot){
     Map<String,dynamic> data = snapshot.data() as Map<String,dynamic>;
     return Official(
@@ -21,7 +22,8 @@ class Official{
       data['address'].toString(),
       data['email'].toString(),
       data['phone'].toString(),
-      data['website'].toString()
+      data['website'].toString(),
+      data['following'] as List<dynamic>
     );
   }
 }

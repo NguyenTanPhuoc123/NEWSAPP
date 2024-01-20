@@ -1,4 +1,3 @@
-import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';

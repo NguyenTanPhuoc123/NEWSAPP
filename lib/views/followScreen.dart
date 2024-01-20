@@ -10,7 +10,7 @@ class FollowScreen extends StatefulWidget {
 }
 
 class _FollowScreenState extends State<FollowScreen> {
-  List<Official> officials = List.filled(0,Official("","","","","","","",""),growable: true);
+  List<Official> officials = List.filled(0,Official("","","","","","","","",[]),growable: true);
   @override
   void initState() {
     super.initState();
@@ -59,9 +59,8 @@ class _FollowScreenState extends State<FollowScreen> {
                 textAlign: TextAlign.start,
                 style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),
               ),
-              Expanded(
-                child: IconButton(
-                    icon: const Icon(Icons.done_all), onPressed: () {}),
+              const Expanded(
+                child: Icon(Icons.done_all),
               )
             ]));
           }),

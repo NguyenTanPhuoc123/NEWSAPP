@@ -20,23 +20,27 @@ class ControllerNews{
  }
 
 static getImg(String? description){
-    int start = description!.indexOf('img src=');
-    int end = description.indexOf('</a>');
-
-  if (start!=-1 && end!=-1) {
-      return description.substring(start+9,end-3); 
-    }
+    int start = description!.indexOf('src=');
+    int end = description.indexOf('"></a>');
+    int end2 = description.indexOf('" ></a>');
+    
+  if (start!=-1 && end2!=-1) {
+      return description.substring(start+5,end2); 
+  }
+  else if(start!=-1 && end!=-1){
+    return description.substring(start+9,end);
+  }
     else{
       return "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
     }
     
   }
  static Future<void> getListNews(String url) async {
-
       final feed = await loadFeed(url);
       for (var item in feed.items!) {
-        var author = feed.generator;
+        var author = getAuthor(feed.generator.toString());
         var logoUrl = feed.image!.url!=null?feed.image!.url.toString() :"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+        print(item.title.toString());
         News news = News(
           item.title.toString(),
           logoUrl,
@@ -50,6 +54,39 @@ static getImg(String? description){
         listNews.add(news);
       }
       
+  }
+
+  static getAuthor(String author){
+    int start = author.indexOf('https://');
+
+  if (start!=-1) {
+      return author.substring(start+8); 
+  }
+  else{
+      return author;
+  }
+    
+  }
+
+  static Future<void> getListAllNews(List<String> url) async{
+    for (var urlFeed in url) {
+      final feed = await loadFeed(urlFeed);
+      for (var item in feed.items!) {
+        var author = getAuthor(feed.generator.toString());
+        var logoUrl = feed.image!.url!=null?feed.image!.url.toString() :"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+        News news = News(
+          item.title.toString(),
+          logoUrl,
+          await getContent(item.link.toString()),
+          getDescription(item.description.toString()),
+          formatPubDate(item.pubDate),
+          author.toString(),
+          getImg(item.description),
+          item.link.toString()
+        );
+        listNews.add(news);
+      }
+    }
   }
 
   static List<News> getListNewsByOfficial(String official){
@@ -100,18 +137,21 @@ static getImg(String? description){
     preferences = await SharedPreferences.getInstance();
   }
 
-  static loadListNewsFromJson(String key) {
-      final jsonListString = preferences.getStringList(key);
-      if(jsonListString!=null){
-        final jsonList = jsonListString.map((jsonString) => json.decode(jsonString)).toList(); 
-        listNewsCollection = jsonList.map((jsonMap) => News.fromJson(jsonMap)).toList();
-      }
+  static loadListNewsFromJson(String key){
+      List<String>? lst = preferences.getStringList(key);
+      listNewsCollection = lst?.map((news)=> News.fromJson(json.decode(news))).toList() ?? [];
   }
 
   static Future<void> addNewsToCollection(String key,News news) async{
-    final jsonMap = news.toJson();
-    final jsonString = json.encode(jsonMap);
-    await preferences.setString(key,jsonString);
+    listNewsCollection.add(news);
+    final jsonString = listNewsCollection.map((e) => jsonEncode(e.toJson())).toList();
+    await preferences.setStringList(key,jsonString);
+  }
+
+  static Future<void> removeNewsFromCollection(String key,News news) async{
+    listNewsCollection.removeWhere((element) => element == news);
+    final jsonString = listNewsCollection.map((e) => jsonEncode(e.toJson())).toList();
+    await preferences.setStringList(key,jsonString);
   }
 }
 

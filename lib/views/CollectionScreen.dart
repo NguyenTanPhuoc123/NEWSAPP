@@ -1,6 +1,6 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
-import 'package:doandidong/views/FavoriteNewsItem.dart';
+import 'package:doandidong/views/newsCollectionItem.dart';
 import 'package:flutter/material.dart';
 
 class CollectionScreen extends StatefulWidget {
@@ -19,10 +19,11 @@ class _CollectionScreenState extends State<CollectionScreen> {
   }
   _initiallizePrefs() async{
     await ControllerNews.init();
-    setState(() {
     ControllerNews.loadListNewsFromJson('listNews');
+    setState(() {
     newsCollection = ControllerNews.listNewsCollection;
     });
+
   }
 
   @override
@@ -35,9 +36,6 @@ class _CollectionScreenState extends State<CollectionScreen> {
           onPressed: ()=>Navigator.pop(context),
           icon: const Icon(Icons.arrow_back,color: Colors.black38,)
         ),
-        actions: [
-          IconButton(onPressed: (){},icon:const Icon(Icons.delete,color: Colors.black38,))
-        ],
       ),
       body: newsCollection.isEmpty ? const Center(child: Text("Chưa có tin nào được lưu",style: TextStyle(
         fontSize: 24,
@@ -47,7 +45,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
         scrollDirection: Axis.vertical,
         itemCount: newsCollection.length,
         itemBuilder: (context,index){
-          return FavoriteNewsItem(news: newsCollection[index]);
+          return NewsCollectionItem(news: newsCollection[index]);
         }
       )
     );

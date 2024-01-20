@@ -2,7 +2,7 @@ import 'package:doandidong/model/Official.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ControllerOfficial{
-  static List<Official> officials = List.filled(0,Official("","","","","","","",""),growable: true);
+  static List<Official> officials = List.filled(0,Official("","","","","","","","",[]),growable: true);
   static CollectionReference collection = FirebaseFirestore.instance.collection('officials');
   
   static Future<void> getListOfficial() async{
@@ -25,6 +25,18 @@ class ControllerOfficial{
       return null;
     }
     return null; 
+  }
+
+  static List<Official> getListOfficialByUser(String email){
+    List<Official> listOfficial= List.filled(0,Official("","","","","","","","",[]),growable: true);
+    for (var channel in listOfficial) {
+        for (var emailUser in channel.following) {
+          if(emailUser.compareTo(email)==0){
+            listOfficial.add(channel);
+          }
+        }
+    }
+    return listOfficial;
   }
 
 }
