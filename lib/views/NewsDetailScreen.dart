@@ -1,5 +1,5 @@
 import 'package:doandidong/control/ControllerNews.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/comment.dart';
 import 'package:doandidong/model/User.dart';
@@ -226,7 +226,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           border: OutlineInputBorder()
                           ),                   
                       ),
-                    ]),
+                      )]),
                     const SizedBox(
                       width: 10,
                     ),

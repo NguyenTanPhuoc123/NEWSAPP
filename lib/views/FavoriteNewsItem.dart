@@ -1,20 +1,24 @@
+import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteNewsItem extends StatelessWidget {
-  const FavoriteNewsItem({super.key, required this.news});
+  FavoriteNewsItem({super.key, required this.news});
   final News news;
+  User user = User("","","abc","",true);
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
       child: InkWell(
-          onTap: () => Navigator.push(
+          onTap: (){ 
+            ControllerNews.saveNewsRead(user.displayName,news);
+            Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewsDetailScreen(news: news))),
+                  builder: (context) => NewsDetailScreen(news: news)));},
           child: Row(
             children: [
               Container(

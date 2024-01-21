@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doandidong/control/ControllerNews.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

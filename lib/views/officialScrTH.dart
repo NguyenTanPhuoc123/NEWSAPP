@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/views/NewsItem.dart';
 
 class TongHop extends StatefulWidget {

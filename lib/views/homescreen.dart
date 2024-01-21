@@ -1,7 +1,7 @@
 import 'package:doandidong/control/ControllerCategory.dart';
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/Category.dart';
-import 'package:doandidong/model/news.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/views/NewsItem.dart';
 import 'package:doandidong/views/SearchScreen.dart';
 import 'package:flutter/material.dart';
