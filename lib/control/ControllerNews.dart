@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doandidong/model/News.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:http/http.dart' as http;
@@ -7,8 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 class ControllerNews{
   static late SharedPreferences preferences;
+  static DatabaseReference databaseRef = FirebaseDatabase.instance.ref().child("FavoriteNews");
   static List<News> listNews = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""),growable: true);
-  static List<News> listNewsCollection = List.filled(0,News("","",List.empty(),"","","","",""),growable: true);
+  static List<News> listNewsCollection = List.filled(0,News("","",List.empty(growable: true),"","","","",""),growable: true);
+  static CollectionReference collection = FirebaseFirestore.instance.collection('news');
   static Future<RssFeed> loadFeed(String url) async{
     try{
       final client = http.Client();
@@ -34,26 +38,6 @@ static getImg(String? description){
       return "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
     }
     
-  }
- static Future<void> getListNews(String url) async {
-      final feed = await loadFeed(url);
-      for (var item in feed.items!) {
-        var author = getAuthor(feed.generator.toString());
-        var logoUrl = feed.image!.url!=null?feed.image!.url.toString() :"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
-        print(item.title.toString());
-        News news = News(
-          item.title.toString(),
-          logoUrl,
-          await getContent(item.link.toString()),
-          getDescription(item.description.toString()),
-          formatPubDate(item.pubDate),
-          author.toString(),
-          getImg(item.description),
-          item.link.toString()
-        );
-        listNews.add(news);
-      }
-      
   }
 
   static getAuthor(String author){
@@ -166,5 +150,37 @@ static getImg(String? description){
     final jsonString = listNewsCollection.map((e) => jsonEncode(e.toJson())).toList();
     await preferences.setStringList(key,jsonString);
   }
+
+  static Future<void> saveNewsFavorite(String username,News news) async{
+    await databaseRef.child(username).child(news.title).set(news.toJson());
+  }
+
+  static Future<List<News>> getListNewsFavorite(String username) async {
+    final listNewsFavorite = List.filled(0,News("","",[],"","","","",""),growable: true);
+    final snapshot = await databaseRef.child(username).get();
+    for(final item in (snapshot.value as Map).entries){
+      listNewsFavorite.add(News.fromJson(item.value));
+      }
+    return listNewsFavorite;
+  } 
+
+  static Future<void> removeNewsFavorite(String username, News news) async{
+    await databaseRef.child(username).child(news.title).remove();
+  }
+
+  static Future<List<String>> getUserLiked(String title) async{
+    final listUsersLiked = List.filled(0,"",growable: true);
+    final snapshot = await databaseRef.get();
+    for(var user in snapshot.children){
+        for (var item in user.children) {
+          if(item.key.toString().compareTo(title)==0){
+          listUsersLiked.add(user.key.toString());
+        }
+        }
+        
+    }
+    return listUsersLiked;
+  }
+
 }
 
