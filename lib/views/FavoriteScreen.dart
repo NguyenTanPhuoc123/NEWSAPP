@@ -23,29 +23,40 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         });
       });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:  Text('Danh sách đã thích(${newsFavorites.length})',style:const TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: ()=>Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back,color: Colors.black38,)
+        appBar: AppBar(
+          title: Text(
+            'Danh sách đã thích(${newsFavorites.length})',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black38,
+              )),
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.sort_rounded,
+                  color: Colors.black38,
+                ))
+          ],
         ),
-        actions: [
-          IconButton(onPressed: (){},icon:const Icon(Icons.sort_rounded,color: Colors.black38,))
-        ],
-      ),
-      body: newsFavorites.isEmpty ? const Center(child: CircularProgressIndicator(),):
-      ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: newsFavorites.length,
-        itemBuilder: (context,index){
-          return FavoriteNewsItem(news: newsFavorites[index]);
-        }
-      )
-    );
+        body: newsFavorites.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: newsFavorites.length,
+                itemBuilder: (context, index) {
+                  return FavoriteNewsItem(news: newsFavorites[index]);
+                }));
   }
 }
-

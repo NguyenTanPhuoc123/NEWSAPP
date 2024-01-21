@@ -1,19 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
-import 'package:doandidong/model/News.dart';
+import 'package:doandidong/model/news.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:doandidong/views/officialScreen.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:doandidong/views/HistoryScreen.dart';
+import 'package:doandidong/control/ControllerNews.dart';
 
 class NewsItem extends StatefulWidget {
-  const NewsItem({super.key, required this.news});
+  const NewsItem({Key? key, required this.news, this.onAddedToHistory})
+      : super(key: key);
   final News news;
+  final Function(News news)? onAddedToHistory;
+
   @override
   State<NewsItem> createState() => _NewsItemState();
 }
@@ -24,9 +30,8 @@ class _NewsItemState extends State<NewsItem> {
   bool isFavorite=false;
   User user = User("","12345678","abc","",true);
 
-  String formatCount(int number){
-    if(number<10000)
-    {
+  String formatCount(int number) {
+    if (number < 10000) {
       return "$number";
     }
     else if(number>=10000 && number<1000000)
@@ -92,10 +97,20 @@ class _NewsItemState extends State<NewsItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
+      onTap: () {
+        // Khi người dùng nhấp vào, gọi hàm callback để thông báo
+
+        // Điều hướng đến trang NewsDetailScreen
+        Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewsDetailScreen(news: widget.news))),
+            builder: (context) => NewsDetailScreen(news: widget.news),
+          ),
+        );
+        addNotication();
+        _loadOrderCount();
+        // addNewsToHistory(widget.news);
+      },
       child: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -128,13 +143,18 @@ class _NewsItemState extends State<NewsItem> {
               children: [
                 const SizedBox(width: 3),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     var official;
                     setState(() {
-                      official = ControllerOfficial.getOfficialByName(widget.news.author);
+                      official = ControllerOfficial.getOfficialByName(
+                          widget.news.author);
                     });
-                    if(official!=null){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
+                    if (official != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OfficialScreen(official: official)));
                     }
                   },
                   child: Container(
@@ -149,20 +169,25 @@ class _NewsItemState extends State<NewsItem> {
                 ),
                 const SizedBox(width: 3),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     var official;
                     setState(() {
-                      official = ControllerOfficial.getOfficialByName(widget.news.author);
+                      official = ControllerOfficial.getOfficialByName(
+                          widget.news.author);
                     });
-                    if(official!=null){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
+                    if (official != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OfficialScreen(official: official)));
                     }
                   },
-                  child: Text(widget.news.author,style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600
+                  child: Text(
+                    widget.news.author,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w600),
                   ),
-                                ),
                 ),
               Expanded(
                 child: Row(
@@ -173,20 +198,16 @@ class _NewsItemState extends State<NewsItem> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed:()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsDetailScreen(news: widget.news))) ,
-                        icon: const FaIcon(FontAwesomeIcons.comment,size: 16),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NewsDetailScreen(news: widget.news))),
+                        icon: const FaIcon(FontAwesomeIcons.comment, size: 16),
                       ),
-                    ],
-                  ),
-                  Text(formatCount(countComment),style:const TextStyle(fontSize: 16)),
-                  IconButton(
-                    onPressed: () async{
-                      await Share.share("${widget.news.title}\n\n${widget.news.link}");
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
-                  )
-                ],
-              ))  
+                    ])
+                  ],
+                ))
               ],
             ),
             Row(
@@ -210,4 +231,49 @@ class _NewsItemState extends State<NewsItem> {
       ),
     );
   }
+
+  void addNewsToHistory(News news) {
+    // Kiểm tra xem tin tức đã có trong lịch sử chưa
+    bool isNewsInHistory =
+        widget.onAddedToHistory != null && widget.onAddedToHistory!(news);
+
+    // Nếu tin tức đã có trong lịch sử, hãy đưa nó lên đầu danh sách
+    if (isNewsInHistory) {
+      // Tin tức đã có trong lịch sử, không cần thực hiện thêm nữa
+      return;
+    }
+
+    // Tin tức chưa có trong lịch sử, thêm bình thường
+    // Bạn có thể cần gọi hàm thích hợp để thêm tin tức vào lịch sử.
+    // Ví dụ: ControllerNews.addNewsToHistory(news);
+
+    // Nếu bạn cần thực hiện thêm tin tức vào danh sách lịch sử, hãy gọi hàm này
+    if (widget.onAddedToHistory != null) {
+      widget.onAddedToHistory!(news);
+    }
+  }
+
+  // void addNewsToHistory(News news) {
+  //   setState(() {
+  //     // Kiểm tra xem tin tức đã có trong lịch sử chưa
+  //     bool isNewsInHistory = newsHistorys.any((element) =>
+  //             element.title == news.title && element.author == news.author
+  //         // Các điều kiện kiểm tra khác nếu cần
+  //         // element.someOtherProperty == news.someOtherProperty
+  //         );
+
+  //     // Nếu tin tức đã có trong lịch sử, hãy đưa nó lên đầu danh sách
+  //     if (isNewsInHistory) {
+  //       newsHistorys.removeWhere((element) =>
+  //               element.title == news.title && element.author == news.author
+  //           // Các điều kiện kiểm tra khác nếu cần
+  //           // element.someOtherProperty == news.someOtherProperty
+  //           );
+  //       newsHistorys.insert(0, news);
+  //     } else {
+  //       // Tin tức chưa có trong lịch sử, thêm bình thường
+  //       newsHistorys.insert(0, news);
+  //     }
+  //   });
+  // }
 }
