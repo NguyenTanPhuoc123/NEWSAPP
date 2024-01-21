@@ -1,6 +1,7 @@
 
 import 'package:doandidong/control/ControllerCategory.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
+import 'package:doandidong/model/category.dart';
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/NotifcationScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
+import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:doandidong/views/officialScreen.dart';
@@ -16,9 +19,10 @@ class NewsItem extends StatefulWidget {
 }
 
 class _NewsItemState extends State<NewsItem> {
-  int countLike = 0;
   int countComment = 12000;
+  int countLike = 0;
   bool isFavorite=false;
+  User user = User("","12345678","abc","",true);
 
   String formatCount(int number){
     if(number<10000)
@@ -39,36 +43,47 @@ class _NewsItemState extends State<NewsItem> {
     
   }
 
+    getCountLike(){
+      ControllerNews.getUserLiked(widget.news.title).then((value){
+        setState(() {
+          countLike = value.length;
+        });
+      });
+      return countLike;
+    }
 
    favorite(){
     if(isFavorite){
       return IconButton(
               onPressed: (){
-                setState(() {
+                  
                   if(ControllerUserLogin.isLogin){
-                  countLike--;
-                  isFavorite = !isFavorite;
+                    setState(() {
+                      isFavorite = !isFavorite;
+                      ControllerNews.removeNewsFavorite(user.displayName, widget.news);
+                    });
+                  
                   }
                   else{
                     showDialogLogin(context);
                   }
                   
-                }); 
               },
               icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
         );
     }
     return IconButton(
       onPressed: (){
-        setState(() {
           if(ControllerUserLogin.isLogin){
-            countLike++;
+            setState(() {
+              ControllerNews.saveNewsFavorite(user.displayName,widget.news);
             isFavorite = !isFavorite;
+            });
+            
           }
           else{
             showDialogLogin(context);
           }
-        }); 
       },
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
       );
@@ -154,7 +169,7 @@ class _NewsItemState extends State<NewsItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   favorite(),
-                  Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
+                  Text(formatCount(getCountLike()),style:const TextStyle(fontSize: 16),),
                   Row(
                     children: [
                       IconButton(

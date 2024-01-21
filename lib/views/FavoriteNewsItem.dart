@@ -1,4 +1,5 @@
 import 'package:doandidong/model/News.dart';
+import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 

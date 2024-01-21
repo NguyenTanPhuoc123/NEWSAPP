@@ -1,3 +1,4 @@
+import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
@@ -19,10 +20,8 @@ class PersonalScreen extends StatefulWidget {
 }
 
 class _PersonalScreenState extends State<PersonalScreen> {
-
  final ControllerUserLogin controller = ControllerUserLogin();
   item(IconData icon, String label,Widget page){
-
     return InkWell(
       onTap: (){
         if(ControllerUserLogin.isLogin){
@@ -122,7 +121,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                           if(ControllerUserLogin.isLogin){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context)=>const PersonalInformationScreen()));
+                            MaterialPageRoute(builder: (context)=>PersonalInformationScreen(user: User("","","","",true))));
                           }
                           else{
                             Navigator.push(

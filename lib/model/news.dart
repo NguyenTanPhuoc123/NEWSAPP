@@ -1,9 +1,11 @@
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class News{
   String title;
   String urlLogo;
   String urlImage;
-  List<String> contents;
+  List<dynamic> contents;
   String description;
   String author;
   String pushDate;
@@ -16,17 +18,18 @@ class News{
   this.pushDate,
   this.author,
   this.urlImage,
-  this.link
+  this.link,
   );
 
-  News.fromJson(Map<String,dynamic> json): title = json['title']??"",
+  News.fromJson(Map<dynamic,dynamic> json): title = json['title']??"",
                                            urlLogo = json['urlLogo']??"",
-                                           contents = List<String>.from(json['contents']??[])??List.empty(growable: true),
+                                           contents = List<dynamic>.from(json['contents']??[])??List.empty(growable: true),
                                            description = json['description']??"",
                                            pushDate=json["pushDate"]?? "",
                                            author = json['author']??"",
                                            urlImage=json["urlImage"]??"",
                                            link=json["link"]??"";
+                                           
   Map<String,dynamic> toJson()=>{
     "title": title,
     "urlLogo": urlLogo,
@@ -35,7 +38,7 @@ class News{
     "pushDate":pushDate,
     "author":author,
     "urlImage":urlImage,
-    "link" : link
+    "link" : link,
   };
-
+  
 }

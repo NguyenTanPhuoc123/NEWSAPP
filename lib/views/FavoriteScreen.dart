@@ -1,5 +1,6 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
+import 'package:doandidong/model/User.dart';
 import 'package:doandidong/views/FavoriteNewsItem.dart';
 import 'package:flutter/material.dart';
 
@@ -11,13 +12,16 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+  User user = User("","","abc","",true);
   List<News> newsFavorites = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""));
   @override
   void initState() {
     super.initState();
-    setState(() {
-      newsFavorites = ControllerNews.listNews;
-    });
+      ControllerNews.getListNewsFavorite(user.displayName).then((value){
+        setState(() {
+          newsFavorites= value;
+        });
+      });
   }
   @override
   Widget build(BuildContext context) {

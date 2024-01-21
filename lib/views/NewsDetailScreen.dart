@@ -17,8 +17,9 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
+  User user = User("","","xyz","",true);
   var content = TextEditingController();
-  int countLike = 1234;
+  int countLike = 0;
   bool isFavorite=false;
   List<Comment> comments = [
     Comment(User("","","Phước Nguyễn","",true),"1/1/2024","Hay lắm!!!"),
@@ -51,26 +52,47 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     if(isFavorite){
       return IconButton(
               onPressed: (){
-                setState(() {
-                  countLike--;
-                  isFavorite = !isFavorite;
+                  ControllerNews.getUserLiked(widget.news.title).then((value){
+                    setState(() {
+                      countLike = value.length;
+                    });
+                  });
+                  if(ControllerUserLogin.isLogin){
+                    setState(() {
+                      isFavorite = !isFavorite;
+                      ControllerNews.removeNewsFavorite(user.displayName, widget.news);
+                    });
                   
-                }); 
+                  }
+                  else{
+                    showDialogLogin(context);
+                  }
+                  
               },
               icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
         );
     }
     return IconButton(
       onPressed: (){
-        setState(() {
-          isFavorite = !isFavorite;
-          countLike++;
-        }); 
+        ControllerNews.getUserLiked(widget.news.title).then((value){
+              setState(() {
+                countLike = value.length;
+              });
+            });
+          if(ControllerUserLogin.isLogin){
+            setState(() {
+              ControllerNews.saveNewsFavorite(user.displayName,widget.news);
+            isFavorite = !isFavorite;
+            });
+            
+          }
+          else{
+            showDialogLogin(context);
+          }
       },
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
       );
   }
-
   initiallizePrefs() async{
     await ControllerNews.init();
     ControllerNews.addNewsToCollection('listNews',widget.news);
@@ -153,6 +175,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               IconButton(
                 onPressed: (){
+                    if(ControllerUserLogin.isLogin){
                     initiallizePrefs();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -160,6 +183,9 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         duration: Duration(seconds: 1),
                       )
                     );
+                    }else{
+                      showDialogLogin(context);
+                    }
                       
                 },
                 icon:  Icon(Icons.bookmark,color: Colors.grey[200])

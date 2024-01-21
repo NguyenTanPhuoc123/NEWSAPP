@@ -56,6 +56,8 @@ dependencies:
   cloud_functions: ^4.6.0
   firebase_messaging: ^14.7.10
   shared_preferences: ^2.2.2
+  image_picker: ^1.0.7
+  firebase_database: ^10.4.0
 
 
 dev_dependencies:

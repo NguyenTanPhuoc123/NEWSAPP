@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
-  const PersonalInformationScreen({super.key});
-
+  const PersonalInformationScreen({super.key,required this.user});
+  final User user;
   @override
   State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-  User user = User("abc123@gmail.com","12345678","Username","1/1/2024",true);
   late String birthday;
   late String username;
   bool valueMale = false;
@@ -46,7 +45,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   }
 
   editBirthday(){
-    DateTime birth = DateFormat("dd/MM/yyyy").parse(user.birthday);
+    DateTime birth = DateFormat("dd/MM/yyyy").parse(widget.user.birthday);
     showDatePicker(
       context: context,
       initialDate: birth,
@@ -65,9 +64,9 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   void initState() {
     super.initState();
     setState(() {
-      birthday = user.birthday;
-      username = user.displayName;
-      if(user.gender){
+      birthday = widget.user.birthday;
+      username = widget.user.displayName;
+      if(widget.user.gender){
         valueMale = true;
         valueFemale = false;
       }
@@ -99,9 +98,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://photo-baomoi.bmcdn.me/w700_r1/2024_01_11_294_48049895/f54db0fedab233ec6aa3.jpg"),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(widget.user.urlAvatar),
                         radius: 70,
                       ),
                       Positioned(
@@ -208,7 +206,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text(user.email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+              Text(widget.user.email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
               
             ],
           ),
