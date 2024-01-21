@@ -1,14 +1,7 @@
-import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/MainScreen.dart';
-import 'package:doandidong/views/PersonalInformationScreen.dart';
-import 'package:doandidong/views/SearchScreen.dart';
-import 'package:doandidong/views/resgisterscreen.dart';
-import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'views/HistoryScreen.dart';
-import 'views/homescreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,4 +1,3 @@
-
 import 'package:doandidong/control/ControllerCategory.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/views/HomeScreen.dart';
@@ -10,8 +9,9 @@ import 'package:doandidong/views/VideoScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 
 class MainScreen extends StatefulWidget {
-
-  const MainScreen({super.key,});
+  const MainScreen({
+    super.key,
+  });
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     _widgetOptions = [
       const HomeScreen(),
       const VideoScreen(),
-      //   NotificationScreen(),
+      const NotificationScreen(),
       const PersonalScreen()
     ];
   }
@@ -40,7 +40,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(

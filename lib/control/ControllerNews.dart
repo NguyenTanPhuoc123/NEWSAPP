@@ -111,25 +111,18 @@ class ControllerNews {
       if (res.statusCode == 200) {
         final document = htmlParser.parse(res.body);
         final elements = document.getElementsByClassName("Normal");
-<<<<<<< HEAD
-        for (var content in elements) {
-          contents.add(content.text);
-        }
-=======
         if (elements.isNotEmpty) {
-            for (var content in elements){
-              contents.add(content.text);    
+          for (var content in elements) {
+            contents.add(content.text);
+          }
+        } else {
+          var lst = document
+              .getElementsByClassName('edittor-content box-cont mt15 clearfix');
+          for (var element in lst) {
+            var lstcontent = element.querySelectorAll('p');
+            contents = lstcontent.map((content) => content.text).toList();
           }
         }
-        else{
-          var lst = document.getElementsByClassName('edittor-content box-cont mt15 clearfix');
-          for (var element in lst) {
-          var lstcontent =  element.querySelectorAll('p'); 
-            contents = lstcontent.map((content) => content.text).toList(); 
-        }
-        }
-        
->>>>>>> d2c838c18192b22f236275e636fccb95a396dedd
       }
     } catch (e) {
       throw e;
@@ -143,29 +136,17 @@ class ControllerNews {
 
   static String getDescription(String? descriptionRss) {
     int start = descriptionRss!.indexOf('</br>');
-<<<<<<< HEAD
-    if (start != -1) {
+    int end = descriptionRss.lastIndexOf(' ]]>');
+    if (start != -1 && end != -1) {
+      return descriptionRss.substring(start + 5, end);
+    } else if (start != -1 && end == -1) {
       return descriptionRss.substring(start + 5, descriptionRss.length);
     }
+
     return "";
   }
 
   static Future<void> init() async {
-=======
-    int end   = descriptionRss.lastIndexOf(' ]]>');
-  if (start!=-1 && end!=-1) {
-      return descriptionRss.substring(start+5,end); 
-  }
-  else if(start!=-1 && end==-1){
-    return descriptionRss.substring(start+5,descriptionRss.length);
-  }
-  
-  return "";
-  
-  }
-  
-  static Future<void> init() async{
->>>>>>> d2c838c18192b22f236275e636fccb95a396dedd
     preferences = await SharedPreferences.getInstance();
   }
 
@@ -187,5 +168,17 @@ class ControllerNews {
     final jsonString =
         listNewsCollection.map((e) => jsonEncode(e.toJson())).toList();
     await preferences.setStringList(key, jsonString);
+  }
+
+  static Future<void> addNewsToHistory(News news) async {
+    // Kiểm tra xem tin tức đã tồn tại trong lịch sử chưa
+    if (!listNews.contains(news)) {
+      // Thêm tin tức vào đầu danh sách lịch sử
+      listNews.insert(0, news);
+
+      // Cập nhật danh sách lịch sử trong SharedPreferences hoặc nơi lưu trữ khác
+      final jsonString = listNews.map((e) => jsonEncode(e.toJson())).toList();
+      await preferences.setStringList('history_key', jsonString);
+    }
   }
 }
