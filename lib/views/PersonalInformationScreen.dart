@@ -1,5 +1,6 @@
 import 'package:doandidong/control/ControllerUserLogin.dart';
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/model/user.dart';
+import 'package:doandidong/views/PersonalScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,87 +12,11 @@ class PersonalInformationScreen extends StatefulWidget {
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-
-  late String birthday=""; 
-  late String email="";
-  late String username="";
-  bool valueMale = true;
+  late String birthday;
+  late String username;
+  bool valueMale = false;
   bool valueFemale = false;
-  //late bool gender = valueMale;
-  bool? gender;
-   final ControllerUserLogin controller = ControllerUserLogin();
-   Map<String, String>? localUserData;
-     // hàm lấy thông tin user 
-//    Future<void> _loadLocalUserData() async {
-//   localUserData = await controller.getLocalUserData();
-//   if (localUserData != null) {
-//     setState(() {
-//       email = localUserData!['email'] ?? '';
-//       username = localUserData!['displayName'] ?? '';
-//       birthday = localUserData!['birthday'] ?? DateFormat("dd/MM/yyyy").format(DateTime.now());
-//       valueMale = localUserData!['gender'] == true;
-//       valueFemale = localUserData!['gender'] == false;
-//     });
-//   } else {
-//     // Nếu không có dữ liệu local, giữ nguyên dữ liệu mặc định
-//     setState(() {
-//     });
-//   }
-// }
-Future<void> _loadUserDataFromFirestore() async {
-  final userController = ControllerUserLogin();
-  final user = await userController.getUserInfo();
-  if (user != null) {
-    final userData = await userController.getUserInfoFromFirestore(user.uid);
-    if (userData != null) {
-      setState(() {
-        email = userData['email'] ?? '';
-        username = userData['displayName'] ?? '';
-        birthday = userData['birthday'] ?? '';
-               dynamic genderValue = userData['gender'];
-        if (genderValue is bool || genderValue == null) {
-          gender = genderValue;
-        } else {
-          // Handle the case where the gender is not a bool
-          print('Invalid gender data type');
-        }
-      });
-    } else {
-      // Handle case where user data is not available
-      print('Không thể lấy thông tin người dùng từ Firestore');
-    }
-  } else {
-    // Handle case where user is not authenticated
-    print('Người dùng chưa đăng nhập');
-    // You might want to redirect to the login screen
-  }
- 
-}
- /// udate thông tin người dùng 
-  Future<void> updateUserInfoToFirestore() async {
-    // Prepare the updated user information
-    Map<String, dynamic> updatedUserInfo = {
-      'email': email,
-      'displayName': username,
-      'birthday': birthday,
-      'gender': valueMale ? true : false,
-      // Add other fields as needed
-    };
-
-    // Get the current user's UID
-    final userController = ControllerUserLogin();
-    final user = await userController.getUserInfo();
-    if (user != null) {
-      String uid = user.uid;
-
-      // Update user information on Firestore
-      await controller.updateUserInfoToFirestore(uid, updatedUserInfo);
-    } else {
-      // Handle the case where the user is not authenticated
-      print('Người dùng chưa đăng nhập');
-      // You might want to redirect to the login screen or handle it accordingly
-    }
-  }
+  ControllerUserLogin controller = ControllerUserLogin();
   editDisplayname(){
     showDialog(context: context,builder:(BuildContext context){
       var txt = TextEditingController();
@@ -121,46 +46,59 @@ Future<void> _loadUserDataFromFirestore() async {
     
   }
 
-editBirthday() async {
-  DateTime birth = DateTime.now(); // Default value in case of an empty birthday
-
-  if (birthday.isNotEmpty) {
-    birth = DateFormat("dd/MM/yyyy").parse(birthday);
-  }
-
-  DateTime? selectedDate = await showDatePicker(
-    context: context,
-    initialDate: birth,
-    firstDate: DateTime(1900),
-    lastDate: DateTime(2050),
-  );
-
-  if (selectedDate != null) {
-    setState(() {
-      birthday = DateFormat("dd/MM/yyyy").format(selectedDate);
+  editBirthday(){
+    DateTime birth = DateFormat("dd/MM/yyyy").parse(widget.user.birthday);
+    showDatePicker(
+      context: context,
+      initialDate: birth,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2050),
+    ).then((DateTime? value){
+      setState(() {
+        birthday =  DateFormat("dd/MM/yyyy").format(value??birth);
+      });
     });
   }
-}
 
+  Future<void> updateUserInfoToFirestore() async {
+    // Prepare the updated user information
+    Map<String, dynamic> updatedUserInfo = {
+      'displayName': username,
+      'birthday': birthday,
+      'gender': valueMale?false:true,
+      // Add other fields as needed
+    };
 
+    // Get the current user's UID
+    final userController = ControllerUserLogin();
+    if (widget.user.uid != null) {
+      String uid = widget.user.uid;
 
+      // Update user information on Firestore
+      await controller.updateUserInfoToFirestore(uid, updatedUserInfo);
+    } else {
+      // Handle the case where the user is not authenticated
+      print('Người dùng chưa đăng nhập');
+      // You might want to redirect to the login screen or handle it accordingly
+    }
+  }
 
   @override
-
-void initState() {
-  super.initState();
-  _loadUserDataFromFirestore();
-  //   if (birthday.isEmpty) {
-  //   // đặt ngày sinh mặc định
-  //   birthday = DateFormat("dd/MM/yyyy").format(DateTime.now());
-
-  // }
-
-  // if (!valueMale && !valueFemale) {
-  //   // đặt giới tính mặc định
-  //   valueMale = true; 
-  // }
-}
+  void initState() {
+    super.initState();
+    setState(() {
+      birthday = widget.user.birthday;
+      username = widget.user.displayName;
+      if(!widget.user.gender){
+        valueMale = true;
+        valueFemale = false;
+      }
+      else{
+        valueFemale = true;
+        valueMale = false;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,7 +121,7 @@ void initState() {
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         backgroundImage: NetworkImage("https://anvientv.com.vn/uploads/upload/1675741738_hinh-chu-tieu(3).jpg"),
                         radius: 70,
                       ),
@@ -225,7 +163,7 @@ void initState() {
                 fontSize: 18
               ),),
               IconButton(onPressed: editDisplayname, icon: const Icon(Icons.edit))
-            ],  
+            ],
           ),
           const SizedBox(height: 15),
           Row(
@@ -291,16 +229,13 @@ void initState() {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text(email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),), 
+              Text(widget.user.email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+              
             ],
           ),
           const SizedBox(height: 80),
           ElevatedButton(
-            onPressed: (){
-              updateUserInfoToFirestore();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('cập nhập thành công')),);
-            },
+            onPressed: updateUserInfoToFirestore,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green[400],
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))

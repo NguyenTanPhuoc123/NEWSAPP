@@ -55,6 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(20),
                         )
                       ),
+                      validator: (value){
+                        if(value==null || controller.emailController.text.isEmpty){
+                          return "Vui lòng nhập email";
+                        }
+                      },
                     ),
                   ),
                   Container(
@@ -70,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: (value){
                         if(value==null && controller.passwordController.text.isEmpty){
-                          return 'khong duoc bo trong email';
+                          return 'Vui lòng nhập mật khẩu';
                         }
                       },
                       obscureText: true,
@@ -118,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Bạn chưa có tài khoản? "),
+                const Text("Bạn chưa có tài khoản? "),
                 InkWell(
                   onTap: (){
                     // chuyển sang màn hình đăng ký

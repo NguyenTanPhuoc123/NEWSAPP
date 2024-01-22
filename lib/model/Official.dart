@@ -15,7 +15,7 @@ class Official{
   factory Official.fromDocumentSnapshot(DocumentSnapshot snapshot){
     Map<String,dynamic> data = snapshot.data() as Map<String,dynamic>;
     return Official(
-      data['id'].toString(),
+      snapshot.id.toString(),
       data['urlLogo'].toString(),
       data['name'].toString(),
       data['description'].toString(),

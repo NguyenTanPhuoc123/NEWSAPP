@@ -1,6 +1,8 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/Official.dart';
+import 'package:doandidong/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:doandidong/views/officialScrTH.dart';
 import 'package:doandidong/views/officialScrTT.dart';
@@ -13,23 +15,45 @@ class OfficialScreen extends StatefulWidget {
 }
 
 class _OfficialScreenState extends State<OfficialScreen> {
-  late bool status;
+  User userCurrent = User("","","","Username","",true);
+  Future<void> _loadUserDataFromFirestore() async {
+  final userController = ControllerUserLogin();
+  final user = await userController.getUserInfo();
+  if (user != null) {
+    final userData = await userController.getUserInfoFromFirestore(user.uid);
+    if (userData != null) {
+      setState(() {
+         userCurrent.uid = user.uid;
+         userCurrent.displayName = userData['displayName']??"Username";
+         userCurrent.email = userData['email'].toString();
+         userCurrent.password = userData['password'].toString();
+         userCurrent.birthday = userData['birthday']??"1/1/2000";
+         userCurrent.gender = userData['gender'].toString()==true?true:false;
+      });
+    } else {
+      // Handle case where user data is not available
+      print('Không thể lấy thông tin người dùng từ Firestore');
+    }
+  } else {
+    // Handle case where user is not authenticated
+    print('Người dùng chưa đăng nhập');
+    // You might want to redirect to the login screen
+  }
+}
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      status = ControllerOfficial.isFollowing(widget.official);
-    });
+    _loadUserDataFromFirestore();
+    
   }
 
   iconFollowing() {
-    if (status == true) {
+    if (ControllerOfficial.isFollowing(widget.official,userCurrent) == true) {
       return IconButton(
           onPressed: () {
             setState(() {
-              ControllerOfficial.removeUserForChannel(widget.official);
-              status = false;
+              ControllerOfficial.removeUserForChannel(widget.official,userCurrent);
             });
           },
           icon: const Icon(
@@ -40,8 +64,7 @@ class _OfficialScreenState extends State<OfficialScreen> {
       return IconButton(
           onPressed: () {
             setState(() {
-              ControllerOfficial.addUserForChannel(widget.official);
-              status = true;
+              ControllerOfficial.addUserForChannel(widget.official,userCurrent);
             });
           },
           icon: const Icon(

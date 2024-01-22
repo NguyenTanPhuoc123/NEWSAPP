@@ -2,14 +2,12 @@ import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/comment.dart';
-import 'package:doandidong/model/user.dart' ;
+import 'package:doandidong/model/user.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
-import 'HistoryScreen.dart';
-import 'package:doandidong/views/FavoriteNewsItem.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   const NewsDetailScreen({super.key, required this.news});
@@ -30,24 +28,28 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     Comment(User("","","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
 
-  addComment(Comment comment) {
-    comments.insert(0, comment);
+  addComment(Comment comment){
+    comments.insert(0,comment);
   }
-
-  String formatCount(int number) {
-    if (number < 10000) {
+  String formatCount(int number){
+   if(number<10000)
+    {
       return "$number";
-    } else if (number >= 10000 && number < 1000000) {
-      return "${number ~/ 1000}K+";
-    } else if (number < 1000000000) {
-      return "${number ~/ 1000000}M+";
-    } else {
+    }
+    else if(number>=10000 && number<1000000)
+    {
+      return "${number~/1000}K+";
+    }
+    else if(number<1000000000)
+    {
+      return "${number~/1000000}M+";
+    }
+    else {
       return "1T+";
     }
   }
-
-  favorite() {
-    if (isFavorite) {
+  favorite(){
+    if(isFavorite){
       return IconButton(
               onPressed: (){
                   ControllerNews.getUserLiked(widget.news.title).then((value){
@@ -93,7 +95,17 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
   initiallizePrefs() async{
     await ControllerNews.init();
-    ControllerNews.addNewsToCollection('listNews', widget.news);
+    ControllerNews.addNewsToCollection('listNews',widget.news);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ControllerNews.getUserLiked(widget.news.title).then((value){
+      setState(() {
+        countLike = value.length;
+      });
+    });
   }
 
   @override
@@ -226,10 +238,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           border: OutlineInputBorder()
                           ),                   
                       ),
-                      )]),
-                    const SizedBox(
-                      width: 10,
                     ),
+                    const SizedBox(width: 10,),
                     IconButton(
                     onPressed: () {
                       setState(() {
@@ -243,20 +253,24 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       });
                     },
                     icon: const Icon(Icons.send,color: Colors.grey),
-
                     )
                   ],
                 ),
-                // ListView.builder(
-                //     primary: false,
-                //     shrinkWrap: true,
-                //     itemCount: comments.length,
-                //     itemBuilder: (context, index) {
-                //       return CommentItem(comment: comments[index]);
-                //     })
-              )
-            ],
-          ),
-        ));
+                ListView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  itemCount: comments.length,
+                  itemBuilder: (context,index){
+                    return CommentItem(comment: comments[index]);
+                  }
+                )
+                
+              ],
+            ),
+          )
+        ]
+        )
+      ),  
+    );
   }
 }

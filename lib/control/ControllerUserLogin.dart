@@ -1,20 +1,19 @@
   import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doandidong/views/LoginScreen.dart';
+  import 'package:doandidong/views/LoginScreen.dart';
   import 'package:doandidong/views/MainScreen.dart';
   import 'package:firebase_auth/firebase_auth.dart';
-  import 'package:flutter/foundation.dart';
   import 'package:flutter/material.dart';
   import 'package:shared_preferences/shared_preferences.dart';
 
   class ControllerUserLogin  {
-    static bool isLogin= false;
+  static bool isLogin= false;
   late TextEditingController passwordController = TextEditingController() ;
   late TextEditingController emailController = TextEditingController();
   // khởi tạo xác thực firebase 
       FirebaseAuth _auth = FirebaseAuth.instance;
     // khởi tạo lưu trữ người dùng về local
     SharedPreferences? prefs ;
-    //load user đăng hập vào app
+    //load user đăng nhập vào app
   Future<void> loadUserData(BuildContext context) async {
     prefs = await SharedPreferences.getInstance();
     String? storedEmail = prefs?.getString('email');
@@ -42,7 +41,6 @@ import 'package:doandidong/views/LoginScreen.dart';
       try{
           UserCredential userCredential = await _auth
           .signInWithEmailAndPassword(
-
             email: emailController.text,
             password: passwordController.text
             );
@@ -149,7 +147,7 @@ Future<Map<String, String>?> getLocalUserData() async {
     return null;
   }
 }
-// udate user firestore
+// update user firestore
 Future<void> updateUserInfoToFirestore(String uid, Map<String, dynamic> userData) async {
   try {
     await FirebaseFirestore.instance.collection('users').doc(uid).update(userData);

@@ -1,11 +1,12 @@
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/Official.dart';
+import 'package:doandidong/model/user.dart';
 import 'package:doandidong/views/officialScreen.dart';
 import 'package:flutter/material.dart';
 
 class FollowScreen extends StatefulWidget {
-  const FollowScreen({super.key});
-
+  const FollowScreen({super.key,required this.user});
+  final User user;
   @override
   State<FollowScreen> createState() => _FollowScreenState();
 }
@@ -16,7 +17,7 @@ class _FollowScreenState extends State<FollowScreen> {
   void initState() {
     super.initState();
     setState(() {
-      officials = ControllerOfficial.getListOfficialByUser("danhkbm12@gmail.com");
+      officials = ControllerOfficial.getListOfficialByUser(widget.user.email);
     });
   }
   @override

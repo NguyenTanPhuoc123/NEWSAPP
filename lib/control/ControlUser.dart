@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 class ControllerUser{
- //static  bool isLogin = false;
- // khởi tại firebase auth 
+ // khởi tại firebase auth
 final FirebaseAuth auth = FirebaseAuth.instance;
 // ham lay thong tin ca nhan 
  Future<User?> getCurrentUser() async {
@@ -14,4 +13,7 @@ final FirebaseAuth auth = FirebaseAuth.instance;
       return null;
     }
   }
+
+  
+
 }

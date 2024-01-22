@@ -1,37 +1,55 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/model/user.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:doandidong/views/officialScreen.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:doandidong/views/HistoryScreen.dart';
-import 'package:doandidong/control/ControllerNews.dart';
 
 class NewsItem extends StatefulWidget {
-  const NewsItem({Key? key, required this.news, this.onAddedToHistory})
-      : super(key: key);
+  const NewsItem({super.key, required this.news});
   final News news;
-  final Function(News news)? onAddedToHistory;
-
   @override
   State<NewsItem> createState() => _NewsItemState();
 }
 
 class _NewsItemState extends State<NewsItem> {
+  User userCurrent = User("","","","","",false);
   int countComment = 12000;
   int countLike = 0;
   bool isFavorite=false;
-  User user = User("","","12345678","abc","",true);
+  Future<void> _loadUserDataFromFirestore() async {
+  final userController = ControllerUserLogin();
+  final user = await userController.getUserInfo();
+  if (user != null) {
+    final userData = await userController.getUserInfoFromFirestore(user.uid);
+    if (userData != null) {
+      setState(() {
+         userCurrent.uid = user.uid;
+         userCurrent.displayName = userData['displayName']??"Username";
+         userCurrent.email = userData['email'].toString();
+         userCurrent.password = userData['password'].toString();
+         userCurrent.birthday = userData['birthday']??"1/1/2000";
+         userCurrent.gender = userData['gender'].toString()==true?true:false;
+      });
+    } else {
+      // Handle case where user data is not available
+      print('Không thể lấy thông tin người dùng từ Firestore');
+    }
+  } else {
+    // Handle case where user is not authenticated
+    print('Người dùng chưa đăng nhập');
+    // You might want to redirect to the login screen
+  }
+}
 
-  String formatCount(int number) {
-    if (number < 10000) {
+  String formatCount(int number){
+    if(number<10000)
+    {
       return "$number";
     }
     else if(number>=10000 && number<1000000)
@@ -54,35 +72,29 @@ class _NewsItemState extends State<NewsItem> {
           countLike = value.length;
         });
       });
-      return countLike;
     }
 
-   favorite(){
-    if(isFavorite){
+   favorite() {
+    if(ControllerNews.checkUserLiked(userCurrent.uid,widget.news)==true){
       return IconButton(
               onPressed: (){
-                  
-                  if(ControllerUserLogin.isLogin){
-                    setState(() {
-                      isFavorite = !isFavorite;
-                      ControllerNews.removeNewsFavorite(user.displayName, widget.news);
+                    setState(() {                     
+                      ControllerNews.removeNewsFavorite(userCurrent.displayName, widget.news);
+                      countLike--;
+                      
                     });
-                  
-                  }
-                  else{
-                    showDialogLogin(context);
-                  }
-                  
+                      
               },
               icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
         );
     }
+    else{
     return IconButton(
       onPressed: (){
           if(ControllerUserLogin.isLogin){
-            setState(() {
-              ControllerNews.saveNewsFavorite(user.displayName,widget.news);
-            isFavorite = !isFavorite;
+            setState(() {   
+              ControllerNews.saveNewsFavorite(userCurrent.uid,widget.news);
+              countLike++;
             });
             
           }
@@ -91,14 +103,21 @@ class _NewsItemState extends State<NewsItem> {
           }
       },
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
-      );
+      );}
+  }
+
+  @override
+  void initState() {
+    _loadUserDataFromFirestore();
+    super.initState();
+    getCountLike();
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        ControllerNews.saveNewsRead(user.displayName,widget.news);
+    onTap: () {
+        ControllerNews.saveNewsRead(userCurrent.uid,widget.news);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -106,8 +125,8 @@ class _NewsItemState extends State<NewsItem> {
           ),
         );
         
-        // addNewsToHistory(widget.news);
       },
+      
       child: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -140,19 +159,13 @@ class _NewsItemState extends State<NewsItem> {
               children: [
                 const SizedBox(width: 3),
                 InkWell(
-                  onTap: () {
+                  onTap: (){
                     var official;
                     setState(() {
-                      
-                      official = ControllerOfficial.getOfficialByName(
-                          widget.news.author);
+                      official = ControllerOfficial.getOfficialByName(widget.news.author);
                     });
-                    if (official != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  OfficialScreen(official: official)));
+                    if(official!=null){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
                     }
                   },
                   child: Container(
@@ -167,45 +180,44 @@ class _NewsItemState extends State<NewsItem> {
                 ),
                 const SizedBox(width: 3),
                 InkWell(
-                  onTap: () {
+                  onTap: (){
                     var official;
                     setState(() {
-                      official = ControllerOfficial.getOfficialByName(
-                          widget.news.author);
+                      official = ControllerOfficial.getOfficialByName(widget.news.author);
                     });
-                    if (official != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  OfficialScreen(official: official)));
+                    if(official!=null){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>OfficialScreen(official: official)));
                     }
                   },
-                  child: Text(
-                    widget.news.author,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600),
+                  child: Text(widget.news.author,style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600
                   ),
+                                ),
                 ),
               Expanded(
                 child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   favorite(),
-                  Text(formatCount(getCountLike()),style:const TextStyle(fontSize: 16),),
+                  Text(formatCount(countLike),style:const TextStyle(fontSize: 16),),
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    NewsDetailScreen(news: widget.news))),
-                        icon: const FaIcon(FontAwesomeIcons.comment, size: 16),
+                        onPressed:()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>NewsDetailScreen(news: widget.news))) ,
+                        icon: const FaIcon(FontAwesomeIcons.comment,size: 16),
                       ),
-                    ])
-                  ],
-                ))
+                    ],
+                  ),
+                  Text(formatCount(countComment),style:const TextStyle(fontSize: 16)),
+                  IconButton(
+                    onPressed: () async{
+                      await Share.share("${widget.news.title}\n\n${widget.news.link}");
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.share,color: Colors.black38,size: 16,),
+                  )
+                ],
+              ))  
               ],
             ),
             Row(
@@ -229,5 +241,4 @@ class _NewsItemState extends State<NewsItem> {
       ),
     );
   }
-
 }

@@ -1,23 +1,22 @@
 import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/model/user.dart';
 import 'package:doandidong/views/FavoriteNewsItem.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteScreen extends StatefulWidget {
-  const FavoriteScreen({super.key});
-
+  const FavoriteScreen({super.key,required this.user});
+  final User user;
   @override
   State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  User user = User("","","","abc","",true);
   List<News> newsFavorites = List.filled(0,News("","",List.filled(0,"",growable: true),"","","","",""));
   @override
   void initState() {
     super.initState();
-      ControllerNews.getListNewsFavorite(user.displayName).then((value){
+      ControllerNews.getListNewsFavorite(widget.user.uid).then((value){
         setState(() {
           newsFavorites= value;
         });
@@ -39,14 +38,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 Icons.arrow_back,
                 color: Colors.black38,
               )),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.sort_rounded,
-                  color: Colors.black38,
-                ))
-          ],
         ),
         body: newsFavorites.isEmpty
             ? const Center(

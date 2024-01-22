@@ -157,9 +157,11 @@ class ControllerNews {
   static Future<List<News>> getListNewsFavorite(String username) async {
     final listNewsFavorite = List.filled(0,News("","",[],"","","","",""),growable: true);
     final snapshot = await databaseRef.child("FavoriteNews").child(username).get();
+    if(snapshot!=null && snapshot.value!=null){
     for(final item in (snapshot.value as Map).entries){
       listNewsFavorite.add(News.fromJson(item.value));
       }
+    }
     return listNewsFavorite;
   } 
 
@@ -188,11 +190,22 @@ class ControllerNews {
   static Future<List<News>> getListNewsRead(String username) async {
     final listNewsFavorite = List.filled(0,News("","",[],"","","","",""),growable: true);
     final snapshot = await databaseRef.child("History").child(username).get();
+    if(snapshot!=null && snapshot.value!=null){
     for(final item in (snapshot.value as Map).entries){
       listNewsFavorite.add(News.fromJson(item.value));
       }
+    }
     return listNewsFavorite;
+  
   } 
+
+  static Future<bool> checkUserLiked(String username,News news) async{
+    final snapshot = await databaseRef.child("FavoriteNews").child(username).child(news.title);
+    print(snapshot.toString());
+    if(snapshot!=null)
+      return true;
+    return false;
+  }
 
 }
 

@@ -1,9 +1,10 @@
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/control/ControllerNews.dart';
+import 'package:doandidong/control/ControllerOfficial.dart';
+import 'package:doandidong/model/user.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
 import 'package:doandidong/views/FavoriteScreen.dart';
-import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
@@ -21,8 +22,35 @@ class PersonalScreen extends StatefulWidget {
 
 class _PersonalScreenState extends State<PersonalScreen> {
  final ControllerUserLogin controller = ControllerUserLogin();
- Map<String, String>? localUserData;
- String username= "";
+ User userCurrent = User("","","","Username","",true);
+ int countRead=0;
+ int countLike =0;
+
+Future<void> _loadUserDataFromFirestore() async {
+  final userController = ControllerUserLogin();
+  final user = await userController.getUserInfo();
+  if (user != null) {
+    final userData = await userController.getUserInfoFromFirestore(user.uid);
+    if (userData != null) {
+      setState(() {
+         userCurrent.uid = user.uid;
+         userCurrent.displayName = userData['displayName']??"Username";
+         userCurrent.email = userData['email'].toString();
+         userCurrent.password = userData['password'].toString();
+         userCurrent.birthday = userData['birthday']??"1/1/2000";
+         userCurrent.gender = userData['gender'].toString()==true?true:false;
+      });
+    } else {
+      // Handle case where user data is not available
+      print('Không thể lấy thông tin người dùng từ Firestore');
+    }
+  } else {
+    // Handle case where user is not authenticated
+    print('Người dùng chưa đăng nhập');
+    // You might want to redirect to the login screen
+  }
+}
+
   item(IconData icon, String label,Widget page){
     return InkWell(
       onTap: () {
@@ -72,33 +100,24 @@ class _PersonalScreenState extends State<PersonalScreen> {
       return "1T+";
     }
   }
-  // load thong tin ca nhan  
+ 
    @override
   void initState() {
     super.initState();
-    // Gọi hàm để lấy thông tin người dùng từ db khi widget được tạo
-    _loadUserDataFromFirestore();
-  }
-  // hàm lấy thông tin user 
-Future<void> _loadUserDataFromFirestore() async {
-  final userController = ControllerUserLogin();
-  final user = await userController.getUserInfo();
-  if (user != null) {
-    final userData = await userController.getUserInfoFromFirestore(user.uid);
-    if (userData != null) {
+    if(ControllerUserLogin.isLogin){
+      _loadUserDataFromFirestore();
+    ControllerNews.getListNewsRead(userCurrent.uid).then((value){
       setState(() {
-        username = userData['displayName'] ?? '';
+        countRead = value.length;
       });
-    } else {
-      // Handle case where user data is not available
-      print('Không thể lấy thông tin người dùng từ Firestore');
+    });
+    ControllerNews.getListNewsFavorite(userCurrent.uid).then((value){
+      setState(() {
+        countLike = value.length;
+      });
+    });
     }
-  } else {
-    // Handle case where user is not authenticated
-    print('Người dùng chưa đăng nhập');
-    // You might want to redirect to the login screen
   }
-}
   
   @override
   Widget build(BuildContext context) {
@@ -139,21 +158,20 @@ Future<void> _loadUserDataFromFirestore() async {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                       backgroundImage: NetworkImage(
                           "https://anvientv.com.vn/uploads/upload/1675741738_hinh-chu-tieu(3).jpg"),
                       radius: 45),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${username}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
-
+                      Text(userCurrent.displayName,style: const TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
                       InkWell(
                         onTap: (){
                           if(ControllerUserLogin.isLogin){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context)=>PersonalInformationScreen(user: User("","","","","",true))));
+                            MaterialPageRoute(builder: (context)=>PersonalInformationScreen(user: userCurrent)));
                           }
                           else{
                             Navigator.push(
@@ -183,7 +201,7 @@ Future<void> _loadUserDataFromFirestore() async {
                   children: [
                     item(Icons.folder, "Bộ sưu tập", const CollectionScreen()),
                     item(FontAwesomeIcons.solidHeart, "Bài đã thích",
-                        const FavoriteScreen()),
+                         FavoriteScreen(user: userCurrent)),
                     
                   ],
                 ),
@@ -193,8 +211,8 @@ Future<void> _loadUserDataFromFirestore() async {
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    item(Icons.history, "Lịch sử đọc", const HistoryScreen()),
-                    item(Icons.list_alt, "Đang theo dõi", const FollowScreen()),
+                    item(Icons.history, "Lịch sử đọc",  HistoryScreen(user: userCurrent)),
+                    item(Icons.list_alt, "Đang theo dõi", FollowScreen(user:userCurrent)),
                   ])),
             ]),
           ),
@@ -218,9 +236,9 @@ Future<void> _loadUserDataFromFirestore() async {
               Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                    statistical(FontAwesomeIcons.newspaper,"Khám phá",11000),
-                    statistical(FontAwesomeIcons.heart,"Lượt thích",11000),
-                    statistical(Icons.list_alt,"Theo dõi",11000),
+                    statistical(FontAwesomeIcons.newspaper,"Khám phá",countRead),
+                    statistical(FontAwesomeIcons.heart,"Lượt thích",countLike),
+                    statistical(Icons.list_alt,"Theo dõi",ControllerOfficial.getListOfficialByUser(userCurrent.email).length),
                     ],
                   ),
             ]),

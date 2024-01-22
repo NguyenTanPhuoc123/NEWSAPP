@@ -7,7 +7,7 @@ import 'package:doandidong/model/user.dart' as CustomUser;
 class ControllerComment {
   final ControllerUserLogin controller = ControllerUserLogin();
   final DatabaseReference _commentRef =
-      FirebaseDatabase.instance.reference().child('comments');
+      FirebaseDatabase.instance.ref().child('comments');
 
   // Thêm bình luận mới
   Future<void> addComment(String newsId, Comment comment) async {
