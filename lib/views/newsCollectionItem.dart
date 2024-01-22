@@ -4,20 +4,22 @@ import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 
 class NewsCollectionItem extends StatefulWidget {
-  const NewsCollectionItem({super.key,required this.news});
+  const NewsCollectionItem({super.key, required this.news});
   final News news;
   @override
   State<NewsCollectionItem> createState() => _NewsCollectionItemState();
 }
 
 class _NewsCollectionItemState extends State<NewsCollectionItem> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
       child: InkWell(
-          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context) => NewsDetailScreen(news: widget.news))),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NewsDetailScreen(news: widget.news))),
           child: Row(
             children: [
               Container(
@@ -37,10 +39,15 @@ class _NewsCollectionItemState extends State<NewsCollectionItem> {
                       fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),
-              Expanded(child: IconButton(
-                onPressed: (){ControllerNews.removeNewsFromCollection('listNews', widget.news);},
-                icon: const Icon(Icons.delete),color: Colors.black38,)
-              )
+              Expanded(
+                  child: IconButton(
+                onPressed: () {
+                  ControllerNews.removeNewsFromCollection(
+                      'listNews', widget.news);
+                },
+                icon: const Icon(Icons.delete),
+                color: Colors.black38,
+              ))
             ],
           )),
     );

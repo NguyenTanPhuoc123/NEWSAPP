@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
-  const PersonalInformationScreen({super.key});
-
+  const PersonalInformationScreen({super.key,required this.user});
+  final User user;
   @override
   State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
+
   late String birthday=DateFormat("dd/MM/yyyy").format(DateTime.now()); 
   late String email="";
   late String username="";
@@ -89,6 +90,7 @@ Future<void> _loadUserDataFromFirestore() async {
 
   editBirthday(){
     DateTime birth = DateFormat("dd/MM/yyyy").parse(birthday);
+
     showDatePicker(
       context: context,
       initialDate: birth,
@@ -105,12 +107,14 @@ Future<void> _loadUserDataFromFirestore() async {
 
 
   @override
+
 void initState() {
   super.initState();
   _loadUserDataFromFirestore();
     if (birthday.isEmpty) {
     // đặt ngày sinh mặc định
     birthday = DateFormat("dd/MM/yyyy").format(DateTime.now());
+
   }
 
   if (!valueMale && !valueFemale) {
@@ -140,9 +144,8 @@ void initState() {
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://photo-baomoi.bmcdn.me/w700_r1/2024_01_11_294_48049895/f54db0fedab233ec6aa3.jpg"),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage("https://anvientv.com.vn/uploads/upload/1675741738_hinh-chu-tieu(3).jpg"),
                         radius: 70,
                       ),
                       Positioned(
@@ -249,8 +252,7 @@ void initState() {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text(email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
-              
+              Text(email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),), 
             ],
           ),
           const SizedBox(height: 80),

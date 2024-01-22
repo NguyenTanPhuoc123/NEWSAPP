@@ -8,6 +8,8 @@ import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'HistoryScreen.dart';
+import 'package:doandidong/views/FavoriteNewsItem.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   const NewsDetailScreen({super.key, required this.news});
@@ -17,8 +19,9 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
+  User user = User("","","","xyz","",true);
   var content = TextEditingController();
-  int countLike = 1234;
+  int countLike = 0;
   bool isFavorite=false;
   List<Comment> comments = [
     Comment(User("","","","Phước Nguyễn","",true),"1/1/2024","Hay lắm!!!"),
@@ -27,53 +30,70 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     Comment(User("","","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
 
-  addComment(Comment comment){
-    comments.insert(0,comment);
+  addComment(Comment comment) {
+    comments.insert(0, comment);
   }
-  String formatCount(int number){
-   if(number<10000)
-    {
+
+  String formatCount(int number) {
+    if (number < 10000) {
       return "$number";
-    }
-    else if(number>=10000 && number<1000000)
-    {
-      return "${number~/1000}K+";
-    }
-    else if(number<1000000000)
-    {
-      return "${number~/1000000}M+";
-    }
-    else {
+    } else if (number >= 10000 && number < 1000000) {
+      return "${number ~/ 1000}K+";
+    } else if (number < 1000000000) {
+      return "${number ~/ 1000000}M+";
+    } else {
       return "1T+";
     }
   }
-  favorite(){
-    if(isFavorite){
+
+  favorite() {
+    if (isFavorite) {
       return IconButton(
               onPressed: (){
-                setState(() {
-                  countLike--;
-                  isFavorite = !isFavorite;
+                  ControllerNews.getUserLiked(widget.news.title).then((value){
+                    setState(() {
+                      countLike = value.length;
+                    });
+                  });
+                  if(ControllerUserLogin.isLogin){
+                    setState(() {
+                      isFavorite = !isFavorite;
+                      ControllerNews.removeNewsFavorite(user.displayName, widget.news);
+                    });
                   
-                }); 
+                  }
+                  else{
+                    showDialogLogin(context);
+                  }
+                  
               },
               icon: FaIcon(FontAwesomeIcons.solidHeart,color: Colors.red[500],size: 16,) 
         );
     }
     return IconButton(
       onPressed: (){
-        setState(() {
-          isFavorite = !isFavorite;
-          countLike++;
-        }); 
+        ControllerNews.getUserLiked(widget.news.title).then((value){
+              setState(() {
+                countLike = value.length;
+              });
+            });
+          if(ControllerUserLogin.isLogin){
+            setState(() {
+              ControllerNews.saveNewsFavorite(user.displayName,widget.news);
+            isFavorite = !isFavorite;
+            });
+            
+          }
+          else{
+            showDialogLogin(context);
+          }
       },
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
       );
   }
-
   initiallizePrefs() async{
     await ControllerNews.init();
-    ControllerNews.addNewsToCollection('listNews',widget.news);
+    ControllerNews.addNewsToCollection('listNews', widget.news);
   }
 
   @override
@@ -153,6 +173,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               IconButton(
                 onPressed: (){
+                    if(ControllerUserLogin.isLogin){
                     initiallizePrefs();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -160,6 +181,9 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         duration: Duration(seconds: 1),
                       )
                     );
+                    }else{
+                      showDialogLogin(context);
+                    }
                       
                 },
                 icon:  Icon(Icons.bookmark,color: Colors.grey[200])
@@ -202,8 +226,10 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           border: OutlineInputBorder()
                           ),                   
                       ),
+                      )]),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    const SizedBox(width: 10,),
                     IconButton(
                     onPressed: () {
                       setState(() {
@@ -217,24 +243,20 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       });
                     },
                     icon: const Icon(Icons.send,color: Colors.grey),
+
                     )
                   ],
                 ),
-                ListView.builder(
-                  primary: false,
-                  shrinkWrap: true,
-                  itemCount: comments.length,
-                  itemBuilder: (context,index){
-                    return CommentItem(comment: comments[index]);
-                  }
-                )
-                
-              ],
-            ),
-          )
-        ]
-        )
-      ),  
-    );
+                // ListView.builder(
+                //     primary: false,
+                //     shrinkWrap: true,
+                //     itemCount: comments.length,
+                //     itemBuilder: (context, index) {
+                //       return CommentItem(comment: comments[index]);
+                //     })
+              )
+            ],
+          ),
+        ));
   }
 }

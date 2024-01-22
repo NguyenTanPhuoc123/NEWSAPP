@@ -16,39 +16,38 @@ class _OfficialScreenState extends State<OfficialScreen> {
   late bool status;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     setState(() {
       status = ControllerOfficial.isFollowing(widget.official);
     });
   }
 
-  iconFollowing(){
-    if(status==true){
-     return IconButton(
-        onPressed: () {
-          setState(() {
-            ControllerOfficial.removeUserForChannel(widget.official);
-            status = false;
-          });
-        },
-        icon: const Icon(
-          Icons.check_circle_outline_sharp,
-          color: Colors.green,
-      ));
-    }
-    else{
+  iconFollowing() {
+    if (status == true) {
       return IconButton(
-        onPressed: () {
-          setState(() {
-            ControllerOfficial.addUserForChannel(widget.official);
-            status = true;
-          });
-        },
-        icon: const Icon(
-          Icons.add_circle_outline,
-          color: Colors.green,
-        ));
+          onPressed: () {
+            setState(() {
+              ControllerOfficial.removeUserForChannel(widget.official);
+              status = false;
+            });
+          },
+          icon: const Icon(
+            Icons.check_circle_outline_sharp,
+            color: Colors.green,
+          ));
+    } else {
+      return IconButton(
+          onPressed: () {
+            setState(() {
+              ControllerOfficial.addUserForChannel(widget.official);
+              status = true;
+            });
+          },
+          icon: const Icon(
+            Icons.add_circle_outline,
+            color: Colors.green,
+          ));
     }
   }
 
@@ -95,7 +94,9 @@ class _OfficialScreenState extends State<OfficialScreen> {
                   ),
                 ),
                 body: TabBarView(children: [
-                  TongHop(listNews: ControllerNews.getListNewsByOfficial(widget.official.name)),
+                  TongHop(
+                      listNews: ControllerNews.getListNewsByOfficial(
+                          widget.official.name)),
                   ThongTin(
                       description: widget.official.description,
                       email: widget.official.email,
