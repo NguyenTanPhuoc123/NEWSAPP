@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 class FavoriteNewsItem extends StatelessWidget {
   FavoriteNewsItem({super.key, required this.news});
   final News news;
-  User user = User("","","","abc","",true);
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
       child: InkWell(
           onTap: (){ 
-            ControllerNews.saveNewsRead(user.displayName,news);
+            
             Navigator.push(
               context,
               MaterialPageRoute(
