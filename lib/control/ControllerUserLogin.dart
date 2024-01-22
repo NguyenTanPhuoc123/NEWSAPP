@@ -149,4 +149,14 @@ Future<Map<String, String>?> getLocalUserData() async {
     return null;
   }
 }
+// udate user firestore
+Future<void> updateUserInfoToFirestore(String uid, Map<String, dynamic> userData) async {
+  try {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update(userData);
+    print('User information updated on Firestore');
+  } catch (e) {
+    print('Error updating user information on Firestore: $e');
+    // Handle the error as needed
+  }
+}
   }

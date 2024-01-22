@@ -12,12 +12,13 @@ class PersonalInformationScreen extends StatefulWidget {
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
-  late String birthday=DateFormat("dd/MM/yyyy").format(DateTime.now()); 
+  late String birthday=""; 
   late String email="";
   late String username="";
   bool valueMale = true;
   bool valueFemale = false;
-  late bool gender = valueMale;
+  //late bool gender = valueMale;
+  bool? gender;
    final ControllerUserLogin controller = ControllerUserLogin();
    Map<String, String>? localUserData;
      // hàm lấy thông tin user 
@@ -40,14 +41,20 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 Future<void> _loadUserDataFromFirestore() async {
   final userController = ControllerUserLogin();
   final user = await userController.getUserInfo();
-
   if (user != null) {
     final userData = await userController.getUserInfoFromFirestore(user.uid);
     if (userData != null) {
       setState(() {
         email = userData['email'] ?? '';
         username = userData['displayName'] ?? '';
-        birthday = userData['birthday'] ?? DateFormat("dd/MM/yyyy").format(DateTime.now());
+        birthday = userData['birthday'] ?? '';
+               dynamic genderValue = userData['gender'];
+        if (genderValue is bool || genderValue == null) {
+          gender = genderValue;
+        } else {
+          // Handle the case where the gender is not a bool
+          print('Invalid gender data type');
+        }
       });
     } else {
       // Handle case where user data is not available
@@ -58,7 +65,33 @@ Future<void> _loadUserDataFromFirestore() async {
     print('Người dùng chưa đăng nhập');
     // You might want to redirect to the login screen
   }
+ 
 }
+ /// udate thông tin người dùng 
+  Future<void> updateUserInfoToFirestore() async {
+    // Prepare the updated user information
+    Map<String, dynamic> updatedUserInfo = {
+      'email': email,
+      'displayName': username,
+      'birthday': birthday,
+      'gender': valueMale ? true : false,
+      // Add other fields as needed
+    };
+
+    // Get the current user's UID
+    final userController = ControllerUserLogin();
+    final user = await userController.getUserInfo();
+    if (user != null) {
+      String uid = user.uid;
+
+      // Update user information on Firestore
+      await controller.updateUserInfoToFirestore(uid, updatedUserInfo);
+    } else {
+      // Handle the case where the user is not authenticated
+      print('Người dùng chưa đăng nhập');
+      // You might want to redirect to the login screen or handle it accordingly
+    }
+  }
   editDisplayname(){
     showDialog(context: context,builder:(BuildContext context){
       var txt = TextEditingController();
@@ -88,20 +121,26 @@ Future<void> _loadUserDataFromFirestore() async {
     
   }
 
-  editBirthday(){
-    DateTime birth = DateFormat("dd/MM/yyyy").parse(birthday);
+editBirthday() async {
+  DateTime birth = DateTime.now(); // Default value in case of an empty birthday
 
-    showDatePicker(
-      context: context,
-      initialDate: birth,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2050),
-    ).then((DateTime? value){
-      setState(() {
-        birthday =  DateFormat("dd/MM/yy").format(value??birth);
-      });
+  if (birthday.isNotEmpty) {
+    birth = DateFormat("dd/MM/yyyy").parse(birthday);
+  }
+
+  DateTime? selectedDate = await showDatePicker(
+    context: context,
+    initialDate: birth,
+    firstDate: DateTime(1900),
+    lastDate: DateTime(2050),
+  );
+
+  if (selectedDate != null) {
+    setState(() {
+      birthday = DateFormat("dd/MM/yyyy").format(selectedDate);
     });
   }
+}
 
 
 
@@ -111,16 +150,16 @@ Future<void> _loadUserDataFromFirestore() async {
 void initState() {
   super.initState();
   _loadUserDataFromFirestore();
-    if (birthday.isEmpty) {
-    // đặt ngày sinh mặc định
-    birthday = DateFormat("dd/MM/yyyy").format(DateTime.now());
+  //   if (birthday.isEmpty) {
+  //   // đặt ngày sinh mặc định
+  //   birthday = DateFormat("dd/MM/yyyy").format(DateTime.now());
 
-  }
+  // }
 
-  if (!valueMale && !valueFemale) {
-    // đặt giới tính mặc định
-    valueMale = true; 
-  }
+  // if (!valueMale && !valueFemale) {
+  //   // đặt giới tính mặc định
+  //   valueMale = true; 
+  // }
 }
   @override
   Widget build(BuildContext context) {
@@ -257,7 +296,11 @@ void initState() {
           ),
           const SizedBox(height: 80),
           ElevatedButton(
-            onPressed: (){},
+            onPressed: (){
+              updateUserInfoToFirestore();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('cập nhập thành công')),);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green[400],
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
