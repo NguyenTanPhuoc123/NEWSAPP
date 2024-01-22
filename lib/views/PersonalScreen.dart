@@ -1,5 +1,3 @@
-
-import 'package:doandidong/control/ControlUser.dart';
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/views/CollectionScreen.dart';
@@ -8,6 +6,7 @@ import 'package:doandidong/views/ForgotPasswordScreen.dart';
 import 'package:doandidong/views/HistoryScreen.dart';
 import 'package:doandidong/views/LoginScreen.dart';
 import 'package:doandidong/views/PersonalInformationScreen.dart';
+import 'package:doandidong/views/followScreen.dart';
 import 'package:doandidong/views/inputnewpasswordscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,10 +20,11 @@ class PersonalScreen extends StatefulWidget {
 
 class _PersonalScreenState extends State<PersonalScreen> {
 
-
-
  final ControllerUserLogin controller = ControllerUserLogin();
+ Map<String, String>? localUserData;
+ String username= "";
   item(IconData icon, String label,Widget page){
+
     return InkWell(
       onTap: (){
         if(ControllerUserLogin.isLogin){
@@ -77,7 +77,34 @@ class _PersonalScreenState extends State<PersonalScreen> {
     }
     
   }
-
+  // load thong tin ca nhan  
+   @override
+  void initState() {
+    super.initState();
+    // Gọi hàm để lấy thông tin người dùng từ db khi widget được tạo
+    _loadUserDataFromFirestore();
+  }
+  // hàm lấy thông tin user 
+Future<void> _loadUserDataFromFirestore() async {
+  final userController = ControllerUserLogin();
+  final user = await userController.getUserInfo();
+  if (user != null) {
+    final userData = await userController.getUserInfoFromFirestore(user.uid);
+    if (userData != null) {
+      setState(() {
+        username = userData['displayName'] ?? '';
+      });
+    } else {
+      // Handle case where user data is not available
+      print('Không thể lấy thông tin người dùng từ Firestore');
+    }
+  } else {
+    // Handle case where user is not authenticated
+    print('Người dùng chưa đăng nhập');
+    // You might want to redirect to the login screen
+  }
+}
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +145,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Username",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
+                      Text("${username}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),),
                       InkWell(
                         onTap: (){
                           if(ControllerUserLogin.isLogin){
@@ -159,7 +186,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   item(Icons.history,"Lịch sử đọc",const HistoryScreen()),
-                  item(Icons.list_alt,"Đang theo dõi",const FavoriteScreen()), 
+                  item(Icons.list_alt,"Đang theo dõi",const FollowScreen()), 
                 ],
               ),
             ),

@@ -1,4 +1,4 @@
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/model/user.dart';
 
 class Comment{
   User user;

@@ -1,3 +1,4 @@
+import 'package:doandidong/control/ControllerUserLogin.dart';
 import 'package:doandidong/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,12 +11,53 @@ class PersonalInformationScreen extends StatefulWidget {
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-  User user = User("abc123@gmail.com","12345678","Username","1/1/2024",true);
-  late String birthday;
-  late String username;
-  bool valueMale = false;
+  late String birthday=DateFormat("dd/MM/yyyy").format(DateTime.now()); 
+  late String email="";
+  late String username="";
+  bool valueMale = true;
   bool valueFemale = false;
+  late bool gender = valueMale;
+   final ControllerUserLogin controller = ControllerUserLogin();
+   Map<String, String>? localUserData;
+     // hàm lấy thông tin user 
+//    Future<void> _loadLocalUserData() async {
+//   localUserData = await controller.getLocalUserData();
+//   if (localUserData != null) {
+//     setState(() {
+//       email = localUserData!['email'] ?? '';
+//       username = localUserData!['displayName'] ?? '';
+//       birthday = localUserData!['birthday'] ?? DateFormat("dd/MM/yyyy").format(DateTime.now());
+//       valueMale = localUserData!['gender'] == true;
+//       valueFemale = localUserData!['gender'] == false;
+//     });
+//   } else {
+//     // Nếu không có dữ liệu local, giữ nguyên dữ liệu mặc định
+//     setState(() {
+//     });
+//   }
+// }
+Future<void> _loadUserDataFromFirestore() async {
+  final userController = ControllerUserLogin();
+  final user = await userController.getUserInfo();
 
+  if (user != null) {
+    final userData = await userController.getUserInfoFromFirestore(user.uid);
+    if (userData != null) {
+      setState(() {
+        email = userData['email'] ?? '';
+        username = userData['displayName'] ?? '';
+        birthday = userData['birthday'] ?? DateFormat("dd/MM/yyyy").format(DateTime.now());
+      });
+    } else {
+      // Handle case where user data is not available
+      print('Không thể lấy thông tin người dùng từ Firestore');
+    }
+  } else {
+    // Handle case where user is not authenticated
+    print('Người dùng chưa đăng nhập');
+    // You might want to redirect to the login screen
+  }
+}
   editDisplayname(){
     showDialog(context: context,builder:(BuildContext context){
       var txt = TextEditingController();
@@ -46,7 +88,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   }
 
   editBirthday(){
-    DateTime birth = DateFormat("dd/MM/yyyy").parse(user.birthday);
+    DateTime birth = DateFormat("dd/MM/yyyy").parse(birthday);
     showDatePicker(
       context: context,
       initialDate: birth,
@@ -61,22 +103,21 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
 
 
+
   @override
-  void initState() {
-    super.initState();
-    setState(() {
-      birthday = user.birthday;
-      username = user.displayName;
-      if(user.gender){
-        valueMale = true;
-        valueFemale = false;
-      }
-      else{
-        valueFemale = true;
-        valueMale = false;
-      }
-    });
+void initState() {
+  super.initState();
+  _loadUserDataFromFirestore();
+    if (birthday.isEmpty) {
+    // đặt ngày sinh mặc định
+    birthday = DateFormat("dd/MM/yyyy").format(DateTime.now());
   }
+
+  if (!valueMale && !valueFemale) {
+    // đặt giới tính mặc định
+    valueMale = true; 
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +183,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontSize: 18
               ),),
               IconButton(onPressed: editDisplayname, icon: const Icon(Icons.edit))
-            ],
+            ],  
           ),
           const SizedBox(height: 15),
           Row(
@@ -208,7 +249,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),),
-              Text(user.email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
+              Text(email,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
               
             ],
           ),

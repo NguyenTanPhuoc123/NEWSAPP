@@ -1,16 +1,23 @@
+import 'package:doandidong/control/ControllerNews.dart';
 import 'package:doandidong/model/News.dart';
 import 'package:doandidong/views/NewsDetailScreen.dart';
 import 'package:flutter/material.dart';
 
-class FavoriteNewsItem extends StatelessWidget {
-  const FavoriteNewsItem({super.key,required this.news});
+class NewsCollectionItem extends StatefulWidget {
+  const NewsCollectionItem({super.key,required this.news});
   final News news;
+  @override
+  State<NewsCollectionItem> createState() => _NewsCollectionItemState();
+}
+
+class _NewsCollectionItemState extends State<NewsCollectionItem> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
       child: InkWell(
-          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context) => NewsDetailScreen(news: news))),
+          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context) => NewsDetailScreen(news: widget.news))),
           child: Row(
             children: [
               Container(
@@ -18,20 +25,24 @@ class FavoriteNewsItem extends StatelessWidget {
                   height: 60,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(news.urlImage),
+                        image: NetworkImage(widget.news.urlImage),
                         fit: BoxFit.fill),
                   )),
               const SizedBox(width: 5),
               Expanded(
+                flex: 2,
                 child: Text(
-                  news.title,
+                  widget.news.title,
                   style: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w500),
                 ),
+              ),
+              Expanded(child: IconButton(
+                onPressed: (){ControllerNews.removeNewsFromCollection('listNews', widget.news);},
+                icon: const Icon(Icons.delete),color: Colors.black38,)
               )
             ],
           )),
     );
-    
   }
 }

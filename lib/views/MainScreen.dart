@@ -1,4 +1,6 @@
-import 'package:doandidong/model/news.dart';
+
+import 'package:doandidong/control/ControllerCategory.dart';
+import 'package:doandidong/control/ControllerOfficial.dart';
 import 'package:doandidong/views/HomeScreen.dart';
 import 'package:doandidong/views/NotifcationScreen.dart';
 import 'package:doandidong/views/PersonalScreen.dart';
@@ -22,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-
+    ControllerOfficial.getListOfficial();
     _widgetOptions = [
       const HomeScreen(),
       const VideoScreen(),

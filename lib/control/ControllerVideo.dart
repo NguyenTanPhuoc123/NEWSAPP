@@ -2,10 +2,12 @@ import 'package:doandidong/model/video.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart'as xml;
 class ControllerVideo{
-  static const URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCpK5nl5llhUL4QKq03qan8g";
+  static const URL = ["https://www.youtube.com/feeds/videos.xml?channel_id=UCpK5nl5llhUL4QKq03qan8g",
+                      "https://www.youtube.com/feeds/videos.xml?channel_id=UCL9-pEHNBs3N4r2bMoXdLJA"];
   static List<Video> videos = List.filled(0,Video("","",""),growable: true);
   static Future getListVideo() async{
-    final response = await http.get(Uri.parse( URL));
+    for (String url in URL) {
+      final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final xmlDocument = xml.XmlDocument.parse(response.body);
@@ -23,5 +25,6 @@ class ControllerVideo{
       throw Exception('Failed to load RSS feed');
     }
 
+    }
   }
 }

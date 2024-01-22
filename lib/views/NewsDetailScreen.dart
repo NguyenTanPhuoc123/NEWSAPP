@@ -1,8 +1,8 @@
-import 'package:doandidong/control/ControlUser.dart';
+import 'package:doandidong/control/ControllerNews.dart';
+import 'package:doandidong/model/News.dart';
 import 'package:doandidong/control/ControllerUserLogin.dart';
-import 'package:doandidong/model/news.dart';
 import 'package:doandidong/model/comment.dart';
-import 'package:doandidong/model/User.dart';
+import 'package:doandidong/model/user.dart' ;
 import 'package:doandidong/views/AlertDialog.dart';
 import 'package:doandidong/views/CommentItem.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +21,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   int countLike = 1234;
   bool isFavorite=false;
   List<Comment> comments = [
-    Comment(User("","","Phước Nguyễn","",true),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Danh Hồ","",true),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Trường Phạm","",true),"1/1/2024","Hay lắm!!!"),
-    Comment(User("","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","","Phước Nguyễn","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","","Danh Hồ","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","","Trường Phạm","",true),"1/1/2024","Hay lắm!!!"),
+    Comment(User("","","","Trân Nguyễn","",false),"1/1/2024","Hay lắm!!!"),
   ];
-   
+
   addComment(Comment comment){
     comments.insert(0,comment);
   }
@@ -70,6 +70,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       icon: const FaIcon(FontAwesomeIcons.heart,size: 16,) 
       );
   }
+
+  initiallizePrefs() async{
+    await ControllerNews.init();
+    ControllerNews.addNewsToCollection('listNews',widget.news);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,14 +120,19 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   fontWeight: FontWeight.w500
                 ),
           ),
-          Container(
-            width: 300,
-            height: 300,
-            margin: const EdgeInsets.fromLTRB(5,0,5,10),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.cover)
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width-10,
+                height: 300,
+                margin: const EdgeInsets.fromLTRB(5,0,5,10),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: NetworkImage(widget.news.urlImage),fit: BoxFit.cover)
+                ),
+              ),
+            ],
           ),
           ListView.builder(
             primary: false,
@@ -142,6 +153,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             children: [
               IconButton(
                 onPressed: (){
+                    initiallizePrefs();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Đã thêm vào bộ sưu tập"),
@@ -193,11 +205,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     ),
                     const SizedBox(width: 10,),
                     IconButton(
-                    onPressed: () async {
+                    onPressed: () {
                       setState(() {
                         addComment(
                           Comment(
-                            User("","","Người mới","",true),
+                            User("","","","Người mới","",true),
                             "1/1/2024",
                             content.text
                             )

@@ -23,13 +23,20 @@ class ControllerUserRegister {
         email: emailController.text, 
         password: passwordController.text
         );
-        await credential.user?.updateProfile(displayName: userNameController.text);
+          
+       await credential.user?.updateDisplayName(userNameController.text);
+        await credential.user?.reload();
+
+        // Đợi một khoảng thời gian ngắn để làm mới thông tin (nếu cần) 
+        await Future.delayed(Duration(seconds: 1)); 
+          print("Updated displayName: ${credential.user?.displayName}");
           await _firestore.collection('users').doc(credential.user?.uid).set({
           'email': emailController.text,
-          'userName': userNameController.text,
+          'displayName': userNameController.text,
           'password': passwordController.text,
-          // Thêm các trường khác tùy ý
-          
+          'birthday':'',
+          'avatarUrl' :'' ,
+          'gender': true,    
         });
         ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Đăng ký thành công')
