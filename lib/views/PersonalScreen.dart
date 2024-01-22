@@ -14,7 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PersonalScreen extends StatefulWidget {
   const PersonalScreen({super.key});
-
+  
   @override
   State<PersonalScreen> createState() => _PersonalScreenState();
 }
@@ -158,24 +158,25 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     item(Icons.folder, "Bộ sưu tập", const CollectionScreen()),
                     item(FontAwesomeIcons.solidHeart, "Bài đã thích",
                         const FavoriteScreen()),
+                    
                   ],
                 ),
               ),
-            ]),
-          ),
-          Container(
-              margin: const EdgeInsets.only(top: 50),
-              child: Row(
+              Container(
+                    margin: const EdgeInsets.only(top: 50),
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     item(Icons.history, "Lịch sử đọc", const HistoryScreen()),
                     item(Icons.list_alt, "Đang theo dõi", const FollowScreen()),
                   ])),
+            ]),
+          ),
           Container(
             margin: const EdgeInsets.only(top: 40),
             color: Colors.grey[200],
             child: Column(children: [
-              const Row(
+               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
@@ -184,9 +185,18 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   Text(
                     "Thống kê của bạn",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                  )
+                  ),
                 ],
               ),
+              const SizedBox(height: 20),
+              Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                    statistical(FontAwesomeIcons.newspaper,"Khám phá",11000),
+                    statistical(FontAwesomeIcons.heart,"Lượt thích",11000),
+                    statistical(Icons.list_alt,"Theo dõi",11000),
+                    ],
+                  ),
             ]),
           ),
           const SizedBox(height: 50),
